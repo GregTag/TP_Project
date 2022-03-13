@@ -1,0 +1,27 @@
+#pragma once
+
+#include "Clients.h"
+#include "Permissions.h"
+#include "Requests.h"
+#include "Room.h"
+#include "Socket.h"
+
+class Server {
+   private:
+    std::shared_ptr<Socket> socket;
+    std::list<std::shared_ptr<Room>> rooms;
+    std::list<std::shared_ptr<ClientHandler>> clients;
+    std::shared_ptr<PermissionsBank> permissons_bank;
+
+   public:
+    Server(const std::string&, uint32_t);
+    ~Server();
+
+    void startListen();
+    std::shared_ptr<Room> getRoom(uint32_t);
+    std::shared_ptr<PermissionsBank> getPermissonsBank();
+    void createRoom(std::shared_ptr<Room>);
+    void createClientHandler(std::shared_ptr<ClientHandler>);
+    void serverBroadcast(std::shared_ptr<InfoMessage>);
+    void stopServer();
+};
