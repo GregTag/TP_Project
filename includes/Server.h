@@ -9,8 +9,8 @@
 class Server {
    private:
     std::shared_ptr<Socket> socket;
-    std::list<std::shared_ptr<Room>> rooms;
-    std::list<std::shared_ptr<ClientHandler>> clients;
+    std::unordered_map<uint32_t, std::shared_ptr<Room>> rooms;
+    std::unordered_map<uint32_t, std::shared_ptr<ServersideClientHandler>> clients;
     std::shared_ptr<PermissionsBank> permissons_bank;
 
    public:
@@ -21,7 +21,7 @@ class Server {
     std::shared_ptr<Room> getRoom(uint32_t);
     std::shared_ptr<PermissionsBank> getPermissonsBank();
     void createRoom(std::shared_ptr<Room>);
-    void createClientHandler(std::shared_ptr<ClientHandler>);
+    void createClientHandler(std::shared_ptr<ServersideClientHandler>);
     void serverBroadcast(std::shared_ptr<InfoMessage>);
     void stopServer();
 };

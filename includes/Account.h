@@ -5,17 +5,21 @@
 #include <vector>
 
 struct Account {
-    uint32_t id;
-    std::string name;
-    std::string password_hash;
-    std::vector<uint32_t> available_rooms;
-};
-
-class AnonymousAccount : Account {
    private:
-    static std::shared_ptr<AnonymousAccount> object;
-    AnonymousAccount();
+    static uint32_t next_id;
+    uint32_t id;
 
    public:
-    static std::shared_ptr<AnonymousAccount> getInstance();
+    std::string name;
+    std::string password_hash;
+    std::shared_ptr<std::vector<uint32_t>> available_rooms;
+
+   public:
+    Account();
+    Account(uint32_t id, const std::string& name, const std::string& password_hash,
+            std::shared_ptr<std::vector<uint32_t>> available_rooms);
+    ~Account() = default;
+
+    void constructId();
+    uint32_t getId();
 };

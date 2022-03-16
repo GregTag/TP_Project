@@ -1,58 +1,69 @@
 #pragma once
 
+#include <unordered_map>
+
 #include "Account.h"
 #include "Socket.h"
 
-class ClientHandler;
-class Client;
+class ServersideClientHandler;
+class ClientsideClientHandler;
 
 class Request {
-    virtual std::string getQuery();
-    virtual void handle(ClientHandler);
-    virtual void handle(Client);
+   public:
+    virtual std::string getQuery() = 0;
+    virtual void handle(ServersideClientHandler&) = 0;
+    virtual void handle(ClientsideClientHandler&) = 0;
 };
 
-class AbstractClient {
+class Message : public Request {
+   public:
+    virtual uint32_t getRoom() = 0;
+};
+
+class AbstractClientHandler {
    private:
-    Socket socket;
+    std::shared_ptr<Socket> socket;
 
    protected:
-    Account account;
+    std::shared_ptr<Account> account;
 
    public:
-    AbstractClient(std::shared_ptr<Socket>);
-    ~AbstractClient();
+    AbstractClientHandler(std::shared_ptr<Socket>);
+    virtual ~AbstractClientHandler() = default;
 
     std::shared_ptr<Account> getAccount();
-    void receive(std::shared_ptr<Request>);
+    virtual void receive(std::shared_ptr<Request>) = 0;
+    void sendRequest(const Request&);
     void startReceiving();
 };
 
 class Room;
 
-class ClientHandler : AbstractClient {
+class ServersideClientHandler : public AbstractClientHandler {
    private:
-    std::vector<std::shared_ptr<Room>> rooms;
+    std::unordered_map<uint32_t, std::weak_ptr<Room>> rooms;
 
    public:
-    ClientHandler(std::shared_ptr<Socket>);
-    ~ClientHandler();
+    ServersideClientHandler(std::shared_ptr<Socket>);
+    virtual ~ServersideClientHandler() = default;
+
+    std::shared_ptr<Room> getRoom(uint32_t);
+    void receive(std::shared_ptr<Request>) override;
 };
 
-class Message;
-class UserMessage;
-
-class Client : AbstractClient {
+class ClientsideClientHandler : public AbstractClientHandler {
    public:
-    Client(const std::string& host, uint32_t port);
-    ~Client();
+    ClientsideClientHandler(const std::string& host, uint32_t port);
+    virtual ~ClientsideClientHandler() = default;
 
-    std::string prompt(const std::string&);
-    void sign_in();
-    void sign_up();
-    void renderMessage(uint32_t, std::shared_ptr<Message>);
+    void receive(std::shared_ptr<Request>) override;
+
+    void sign_in(const std::string& name, const std::string& password);
+    void sign_up(const std::string& name, const std::string& password);
     std::fstream getHistory(uint32_t);
-    std::vector<std::string> getUsers(uint32_t);
-    void send(std::shared_ptr<UserMessage>);
-    void sendPrivate(const std::string&, std::shared_ptr<UserMessage>);
+    std::shared_ptr<std::vector<std::pair<uint32_t, std::string>>> getUsers(uint32_t room);
+    void send(uint32_t room, const std::string& text);
+    void sendPrivate(uint32_t room, uint32_t user, const std::string& text);
+
+    virtual void renderMessage(const Message&) = 0;
 };

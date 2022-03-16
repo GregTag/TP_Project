@@ -10,7 +10,8 @@ class Socket {
 
    public:
     Socket();
-    ~Socket();
+    ~Socket() = default;
+
     void bind(std::string, uint32_t);
     void listen();
     std::shared_ptr<Socket> accept();

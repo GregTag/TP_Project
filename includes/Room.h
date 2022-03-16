@@ -1,24 +1,24 @@
 #pragma once;
 
 #include <deque>
-#include <list>
 
 #include "Clients.h"
 
 class Room {
    private:
     uint32_t room_id;
-    std::list<std::shared_ptr<ClientHandler>> clients;
+    std::unordered_map<uint32_t, std::shared_ptr<ServersideClientHandler>> clients;
     std::deque<std::string> history;
 
    public:
     Room(uint32_t);
     ~Room();
 
-    void join(std::shared_ptr<Account>);
-    void leave(std::shared_ptr<Account>);
-    void broadcast(std::shared_ptr<Message>);
+    void join(std::shared_ptr<ServersideClientHandler>);
+    void leave(std::shared_ptr<ServersideClientHandler>);
+    void broadcast(const Message&);
+    std::shared_ptr<ServersideClientHandler> getClient(uint32_t id);
     std::string getHistory();
-    std::string getClients();
+    std::string getClientsList();
     void saveHistory();
 };
