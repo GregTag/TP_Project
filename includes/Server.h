@@ -14,14 +14,14 @@ class Server {
     std::shared_ptr<PermissionsBank> permissons_bank;
 
    public:
-    Server(const std::string&, uint32_t);
+    Server(const std::string& host, uint32_t port);
     ~Server();
 
     void startListen();
-    std::shared_ptr<Room> getRoom(uint32_t);
+    std::shared_ptr<Room> getRoom(uint32_t room_id);
     std::shared_ptr<PermissionsBank> getPermissonsBank();
-    void createRoom(std::shared_ptr<Room>);
-    void createClientHandler(std::shared_ptr<ServersideClientHandler>);
-    void serverBroadcast(std::shared_ptr<InfoMessage>);
+    void createRoom(std::shared_ptr<Room> room);
+    void createClientHandler(std::shared_ptr<ServersideClientHandler> handler);
+    void serverBroadcast(const std::string& text);
     void stopServer();
 };

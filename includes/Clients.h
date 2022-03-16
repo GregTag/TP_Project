@@ -10,6 +10,7 @@ class ClientsideClientHandler;
 
 class Request {
    public:
+    static const char separator = 1;
     virtual std::string getQuery() = 0;
     virtual void handle(ServersideClientHandler&) = 0;
     virtual void handle(ClientsideClientHandler&) = 0;
@@ -60,7 +61,7 @@ class ClientsideClientHandler : public AbstractClientHandler {
 
     void sign_in(const std::string& name, const std::string& password);
     void sign_up(const std::string& name, const std::string& password);
-    std::fstream getHistory(uint32_t);
+    std::string getHistory(uint32_t);
     std::shared_ptr<std::vector<std::pair<uint32_t, std::string>>> getUsers(uint32_t room);
     void send(uint32_t room, const std::string& text);
     void sendPrivate(uint32_t room, uint32_t user, const std::string& text);

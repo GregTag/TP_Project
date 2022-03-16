@@ -15,8 +15,8 @@ class PermissionsBank {
     std::unordered_map<uint32_t, uint32_t> default_permissons_set;
 
    public:
-    PermissionsBank();
-    ~PermissionsBank();
+    PermissionsBank() = default;
+    ~PermissionsBank() = default;
 
     void setDefault(uint32_t room, uint32_t permission_set);
     void set(uint32_t room, uint32_t client, uint32_t permission_set);

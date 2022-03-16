@@ -1,59 +1,127 @@
 #include "Requests.h"
 
 // BaseMessage
-explicit BaseMessage::BaseMessage(uint32_t room) : timestamp(time(0)), room(room) {}
+BaseMessage::BaseMessage(RequestTypes type) : type(type) {}
 
 uint32_t BaseMessage::getRoom() {
-    return room;
+    return 0;
 }
 
-void BaseMessage::handle(ServersideClientHandler& client_handler) {
-    client_handler.getRoom(room)->broadcast(*this);
+std::string BaseMessage::getQuery() {
+    return std::to_string(uint32_t(MessageProperties::Type)) + Request::separator +
+           std::to_string(uint32_t(type));
+}
+void BaseMessage::handle(ServersideClientHandler& handler) {
+    handler.getRoom(getRoom())->broadcast(*this);
+}
+void BaseMessage::handle(ClientsideClientHandler& handler) {
+    handler.renderMessage(*this);
 }
 
-void BaseMessage::handle(ClientsideClientHandler& client) {
-    client.renderMessage(*this);
+RequestTypes BaseMessage::getType() {
+    return type;
 }
 
-// InfoMessage
-InfoMessage::InfoMessage(uint32_t room, const std::string& text) : BaseMessage(room), text(text) {}
+// PropertiesDecorator
+PropertiesDecorator::PropertiesDecorator(std::shared_ptr<Message> message) : wrappe(message) {}
 
-// TextMessage
-TextMessage::TextMessage(uint32_t room, const std::string& text) : BaseMessage(room), text(text) {}
-
-// JoinMessage
-JoinMessage::JoinMessage(uint32_t room) : BaseMessage(room) {}
-
-// LeaveMessage
-LeaveMessage::LeaveMessage(uint32_t room) : BaseMessage(room) {}
-
-// MessageDecorator
-explicit MessageDecorator::MessageDecorator(std::shared_ptr<Message> message) : wrappe(message) {}
-
-uint32_t MessageDecorator::getRoom() {
+uint32_t PropertiesDecorator::getRoom() {
     return wrappe->getRoom();
 }
 
-std::string MessageDecorator::getQuery() {
+std::string PropertiesDecorator::getQuery() {
     return wrappe->getQuery();
 }
 
-void MessageDecorator::handle(ServersideClientHandler& client_handler) {
-    wrappe->handle(client_handler);
+void PropertiesDecorator::handle(ServersideClientHandler& handler) {
+    return wrappe->handle(handler);
 }
 
-void MessageDecorator::handle(ClientsideClientHandler& client) {
-    wrappe->handle(client);
+void PropertiesDecorator::handle(ClientsideClientHandler& handler) {
+    return wrappe->handle(handler);
+}
+
+// TimeDecorator
+TimeDecorator::TimeDecorator(std::shared_ptr<Message> message, time_t timestamp)
+        : PropertiesDecorator(message), timestamp(timestamp) {}
+
+std::string TimeDecorator::getQuery() {
+    return wrappe->getQuery() + Request::separator +
+           std::to_string(uint32_t(MessageProperties::Time)) + Request::separator +
+           std::to_string(timestamp);
+}
+
+// RoomDecorator
+RoomDecorator::RoomDecorator(std::shared_ptr<Message> message, uint32_t room)
+        : PropertiesDecorator(message), room(room) {}
+
+uint32_t RoomDecorator::getRoom() {
+    return room;
+}
+
+std::string RoomDecorator::getQuery() {
+    return wrappe->getQuery() + Request::separator +
+           std::to_string(uint32_t(MessageProperties::Room)) + Request::separator +
+           std::to_string(room);
 }
 
 // SenderDecorator
 SenderDecorator::SenderDecorator(std::shared_ptr<Message> message, const std::string& sender)
-        : MessageDecorator(message), sender(sender) {}
+        : PropertiesDecorator(message), sender(sender) {}
+
+std::string SenderDecorator::getQuery() {
+    return wrappe->getQuery() + Request::separator +
+           std::to_string(uint32_t(MessageProperties::Sender)) + Request::separator + sender;
+}
+
+// TextDecorator
+TextDecorator::TextDecorator(std::shared_ptr<Message> message, const std::string& text)
+        : PropertiesDecorator(message), text(text) {}
+
+std::string TextDecorator::getQuery() {
+    return wrappe->getQuery() + Request::separator +
+           std::to_string(uint32_t(MessageProperties::Text)) + Request::separator + text;
+}
 
 // PrivateDecorator
 PrivateDecorator::PrivateDecorator(std::shared_ptr<Message> message, uint32_t addressee_id)
-        : MessageDecorator(message), addressee_id(addressee_id) {}
+        : PropertiesDecorator(message), addressee_id(addressee_id) {}
 
-void PrivateDecorator::handle(ServersideClientHandler& client_handler) {
-    client_handler.getRoom(wrappe->getRoom())->getClient(addressee_id)->sendRequest(*this);
+std::string PrivateDecorator::getQuery() {
+    return wrappe->getQuery() + Request::separator +
+           std::to_string(uint32_t(MessageProperties::Private)) + Request::separator +
+           std::to_string(addressee_id);
 }
+
+void PrivateDecorator::handle(ServersideClientHandler& handler) {
+    handler.getRoom(wrappe->getRoom())->getClient(addressee_id)->sendRequest(*this);
+}
+
+// AuthorizationRequest
+AuthorizationRequest::AuthorizationRequest(const std::string& name, const std::string& password)
+        : account(std::make_shared<Account>(0, name, password)) {}
+
+std::string AuthorizationRequest::getQuery() {
+    return account->name + Request::separator + account->password_hash;
+}
+// SignInRequest
+SignInRequest::SignInRequest(const std::string& name, const std::string& password_hash)
+        : AuthorizationRequest(name, password_hash) {}
+
+std::string SignInRequest::getQuery() {
+    return std::to_string(uint32_t(RequestTypes::SignIn)) + Request::separator +
+           AuthorizationRequest::getQuery();
+}
+void SignInRequest::handle(ServersideClientHandler& handler) {}
+void SignInRequest::handle(ClientsideClientHandler& handler) {}
+
+// SignUpRequest
+SignUpRequest::SignUpRequest(const std::string& name, const std::string& password_hash)
+        : AuthorizationRequest(name, password_hash) {}
+
+std::string SignUpRequest::getQuery() {
+    return std::to_string(uint32_t(RequestTypes::SignIn)) + Request::separator +
+           AuthorizationRequest::getQuery();
+}
+void SignUpRequest::handle(ServersideClientHandler& handler) {}
+void SignUpRequest::handle(ClientsideClientHandler& handler) {}
