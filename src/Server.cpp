@@ -12,7 +12,9 @@ std::shared_ptr<Room> Server::getRoom(uint32_t room_id) {
     return rooms.at(room_id);
 }
 
-std::shared_ptr<PermissionsBank> Server::getPermissonsBank() {}
+std::shared_ptr<PermissionsBank> Server::getPermissonsBank() {
+    return nullptr;
+}
 
 void Server::createRoom(std::shared_ptr<Room> room) {
     rooms[room->getId()] = room;

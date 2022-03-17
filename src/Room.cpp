@@ -24,8 +24,12 @@ std::shared_ptr<ServersideClientHandler> Room::getClient(uint32_t id) {
     return clients.at(id);
 }
 
-std::string Room::getHistory() {}
+std::string Room::getHistory() {
+    return "history";
+}
 
-std::string Room::getClientsList() {}
+std::string Room::getClientsList() {
+    return "ClientList";
+}
 
 void Room::saveHistory() {}

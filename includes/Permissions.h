@@ -11,7 +11,7 @@ enum class Permissions {
 
 class PermissionsBank {
    private:
-    std::unordered_map<std::pair<uint32_t, uint32_t>, uint32_t> permissions_set;
+    std::unordered_map<uint32_t, std::unordered_map<uint32_t, uint32_t>> permissions_set;
     std::unordered_map<uint32_t, uint32_t> default_permissons_set;
 
    public:
