@@ -10,16 +10,19 @@ enum class Permissions {
 };
 
 class PermissionsBank {
+   public:
+    using PermissionsSet = uint32_t;
+
    private:
-    std::unordered_map<uint32_t, std::unordered_map<uint32_t, uint32_t>> permissions_set;
-    std::unordered_map<uint32_t, uint32_t> default_permissons_set;
+    std::unordered_map<uint32_t, std::unordered_map<uint32_t, PermissionsSet>> permissions_set;
+    std::unordered_map<uint32_t, PermissionsSet> default_permissons_set;
 
    public:
     PermissionsBank() = default;
     ~PermissionsBank() = default;
 
-    void setDefault(uint32_t room, uint32_t permission_set);
-    void set(uint32_t room, uint32_t client, uint32_t permission_set);
-    uint32_t get(uint32_t room, uint32_t client);
+    void setDefault(uint32_t room, PermissionsSet permission_set);
+    void set(uint32_t room, uint32_t client, PermissionsSet permission_set);
+    PermissionsSet get(uint32_t room, uint32_t client);
     bool check(uint32_t room, uint32_t client, Permissions permission);
 };

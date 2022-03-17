@@ -1,14 +1,12 @@
 #pragma once
 
-#include <deque>
-
 #include "Clients.h"
 
 class Room {
    private:
     uint32_t room_id;
     std::unordered_map<uint32_t, std::shared_ptr<ServersideClientHandler>> clients;
-    std::deque<std::string> history;
+    std::string history;
 
    public:
     Room(uint32_t room_id);

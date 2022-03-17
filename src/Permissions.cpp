@@ -1,14 +1,15 @@
 #include "Permissions.h"
 
-void PermissionsBank::setDefault(uint32_t room, uint32_t permission_set) {
+void PermissionsBank::setDefault(uint32_t room, PermissionsBank::PermissionsSet permission_set) {
     default_permissons_set[room] = permission_set;
 }
 
-void PermissionsBank::set(uint32_t room, uint32_t client, uint32_t permission_set) {
+void PermissionsBank::set(uint32_t room, uint32_t client,
+                          PermissionsBank::PermissionsSet permission_set) {
     permissions_set[room][client] = permission_set;
 }
 
-uint32_t PermissionsBank::get(uint32_t room, uint32_t client) {
+PermissionsBank::PermissionsSet PermissionsBank::get(uint32_t room, uint32_t client) {
     return permissions_set[room][client];
 }
 

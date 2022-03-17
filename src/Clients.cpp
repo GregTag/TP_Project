@@ -25,21 +25,21 @@ void ServersideClientHandler::receive(std::shared_ptr<Request> request) {
 }
 
 // ClientsideClientHandler
-ClientsideClientHandler::ClientsideClientHandler(const std::string& host, uint32_t port)
+ClientsideHandler::ClientsideHandler(const std::string& host, uint32_t port)
         : AbstractClientHandler(std::make_shared<Socket>()) {}
 
-void ClientsideClientHandler::receive(std::shared_ptr<Request> request) {
+void ClientsideHandler::receive(std::shared_ptr<Request> request) {
     request->handle(*this);
 }
 
-void ClientsideClientHandler::sign_in(const std::string& name, const std::string& password) {}
-void ClientsideClientHandler::sign_up(const std::string& name, const std::string& password) {}
-std::string ClientsideClientHandler::getHistory(uint32_t) {
+void ClientsideHandler::signIn(const std::string& name, const std::string& password) {}
+void ClientsideHandler::signUp(const std::string& name, const std::string& password) {}
+std::string ClientsideHandler::getHistory(uint32_t) {
     return "history";
 }
-std::shared_ptr<std::vector<std::pair<uint32_t, std::string>>> ClientsideClientHandler::getUsers(
+std::shared_ptr<std::vector<std::pair<uint32_t, std::string>>> ClientsideHandler::getUsers(
         uint32_t room) {
     return nullptr;
 }
-void ClientsideClientHandler::send(uint32_t room, const std::string& text) {}
-void ClientsideClientHandler::sendPrivate(uint32_t room, uint32_t user, const std::string& text) {}
+void ClientsideHandler::send(uint32_t room, const std::string& text) {}
+void ClientsideHandler::sendPrivate(uint32_t room, uint32_t user, const std::string& text) {}

@@ -1,24 +1,25 @@
 #include "Requests.h"
 
 // BaseMessage
-BaseMessage::BaseMessage(RequestTypes type) : type(type) {}
+BaseMessage::BaseMessage(MessageTypes type) : type(type) {}
 
 uint32_t BaseMessage::getRoom() {
     return 0;
 }
 
 std::string BaseMessage::getQuery() {
-    return std::to_string(uint32_t(MessageProperties::Type)) + Request::separator +
+    return std::to_string(uint32_t(RequestTypes::CompoundMessage)) + Request::separator +
+           std::to_string(uint32_t(MessageProperties::Type)) + Request::separator +
            std::to_string(uint32_t(type));
 }
 void BaseMessage::handle(ServersideClientHandler& handler) {
     handler.getRoom(getRoom())->broadcast(*this);
 }
-void BaseMessage::handle(ClientsideClientHandler& handler) {
+void BaseMessage::handle(ClientsideHandler& handler) {
     handler.renderMessage(*this);
 }
 
-RequestTypes BaseMessage::getType() {
+MessageTypes BaseMessage::getType() {
     return type;
 }
 
@@ -37,7 +38,7 @@ void PropertiesDecorator::handle(ServersideClientHandler& handler) {
     return wrappe->handle(handler);
 }
 
-void PropertiesDecorator::handle(ClientsideClientHandler& handler) {
+void PropertiesDecorator::handle(ClientsideHandler& handler) {
     return wrappe->handle(handler);
 }
 
@@ -113,7 +114,7 @@ std::string SignInRequest::getQuery() {
            AuthorizationRequest::getQuery();
 }
 void SignInRequest::handle(ServersideClientHandler& handler) {}
-void SignInRequest::handle(ClientsideClientHandler& handler) {}
+void SignInRequest::handle(ClientsideHandler& handler) {}
 
 // SignUpRequest
 SignUpRequest::SignUpRequest(const std::string& name, const std::string& password_hash)
@@ -124,4 +125,4 @@ std::string SignUpRequest::getQuery() {
            AuthorizationRequest::getQuery();
 }
 void SignUpRequest::handle(ServersideClientHandler& handler) {}
-void SignUpRequest::handle(ClientsideClientHandler& handler) {}
+void SignUpRequest::handle(ClientsideHandler& handler) {}

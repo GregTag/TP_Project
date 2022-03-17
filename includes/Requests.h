@@ -4,24 +4,26 @@
 
 #include "Room.h"
 
-enum class MessageProperties { Type, Time, Room, Sender, Text, Private };
+enum class RequestTypes { CompoundMessage, SignIn, SignUp };
 
-enum class RequestTypes { Common, Info, Error, Join, Leave, SignIn, SignUp };
+enum class MessageTypes { Common, Info, Error, Join, Leave };
+
+enum class MessageProperties { Type, Time, Room, Sender, Text, Private };
 
 class BaseMessage : public Message {
    private:
-    RequestTypes type;
+    MessageTypes type;
 
    public:
-    explicit BaseMessage(RequestTypes type);
+    explicit BaseMessage(MessageTypes type);
     virtual ~BaseMessage() = default;
 
     uint32_t getRoom() override;
     std::string getQuery() override;
     void handle(ServersideClientHandler& handler) override;
-    void handle(ClientsideClientHandler& handler) override;
+    void handle(ClientsideHandler& handler) override;
 
-    RequestTypes getType();
+    MessageTypes getType();
 };
 
 class PropertiesDecorator : public Message {
@@ -35,7 +37,7 @@ class PropertiesDecorator : public Message {
     uint32_t getRoom() override;
     std::string getQuery() override;
     void handle(ServersideClientHandler& handler) override;
-    void handle(ClientsideClientHandler& handler) override;
+    void handle(ClientsideHandler& handler) override;
 };
 
 class TimeDecorator : public PropertiesDecorator {
@@ -113,7 +115,7 @@ class SignInRequest : public AuthorizationRequest {
 
     std::string getQuery() override;
     void handle(ServersideClientHandler& handler) override;
-    void handle(ClientsideClientHandler& handler) override;
+    void handle(ClientsideHandler& handler) override;
 };
 
 class SignUpRequest : public AuthorizationRequest {
@@ -122,5 +124,5 @@ class SignUpRequest : public AuthorizationRequest {
 
     std::string getQuery() override;
     void handle(ServersideClientHandler& handler) override;
-    void handle(ClientsideClientHandler& handler) override;
+    void handle(ClientsideHandler& handler) override;
 };

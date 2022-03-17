@@ -6,14 +6,14 @@
 #include "Socket.h"
 
 class ServersideClientHandler;
-class ClientsideClientHandler;
+class ClientsideHandler;
 
 class Request {
    public:
     static const char separator = 1;
     virtual std::string getQuery() = 0;
     virtual void handle(ServersideClientHandler&) = 0;
-    virtual void handle(ClientsideClientHandler&) = 0;
+    virtual void handle(ClientsideHandler&) = 0;
 };
 
 class Message : public Request {
@@ -52,15 +52,15 @@ class ServersideClientHandler : public AbstractClientHandler {
     void receive(std::shared_ptr<Request>) override;
 };
 
-class ClientsideClientHandler : public AbstractClientHandler {
+class ClientsideHandler : public AbstractClientHandler {
    public:
-    ClientsideClientHandler(const std::string& host, uint32_t port);
-    virtual ~ClientsideClientHandler() = default;
+    ClientsideHandler(const std::string& host, uint32_t port);
+    virtual ~ClientsideHandler() = default;
 
     void receive(std::shared_ptr<Request>) override;
 
-    void sign_in(const std::string& name, const std::string& password);
-    void sign_up(const std::string& name, const std::string& password);
+    void signIn(const std::string& name, const std::string& password);
+    void signUp(const std::string& name, const std::string& password);
     std::string getHistory(uint32_t);
     std::shared_ptr<std::vector<std::pair<uint32_t, std::string>>> getUsers(uint32_t room);
     void send(uint32_t room, const std::string& text);
