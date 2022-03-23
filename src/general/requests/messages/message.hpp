@@ -1,5 +1,5 @@
 #pragma once
-#include "request.hpp"
+#include "requests/request.hpp"
 
 enum class MessageProperties { Type, Time, Room, Sender, Text, Private };
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "requests/message.hpp"
+#include "message.hpp"
 
 class PropertiesDecorator : public Message {
    public:

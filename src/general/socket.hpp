@@ -5,10 +5,10 @@
 
 class Socket {
    public:
-    Socket();
+    Socket() = default;
     Socket(std::string, size_t);
 
-    ~Socket();
+    ~Socket() = default;
 
     void bind(std::string, size_t);
     void listen();
