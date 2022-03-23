@@ -5,14 +5,16 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY archive)
 set(CMAKE_CXX_STANDARD 17)
 
-file(GLOB SOURCES src/*.cpp)
+file(GLOB_RECURSE SERVER src/server_side/*.cpp)
+file(GLOB_RECURSE CLIENT src/client_side/*.cpp)
 
-include_directories(includes)
+add_subdirectory(src/general)
 
-add_library(TcpChat STATIC ${SOURCES})
+add_executable(Server ${SERVER})
+add_executable(Client ${CLIENT})
 
-add_executable(Server ServerSide.cpp)
-add_executable(Client ClientSide.cpp)
+target_include_directories(Server PUBLIC src/general src/server_side)
+target_include_directories(Server PUBLIC src/general src/client_side)
 
-target_link_libraries(Server TcpChat)
-target_link_libraries(Client TcpChat)
+target_link_libraries(Server tcp_general)
+target_link_libraries(Client tcp_general)

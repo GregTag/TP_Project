@@ -4,15 +4,13 @@
 #include <string>
 
 class Socket {
-   private:
-    std::string ip_address;
-    uint32_t port;
-
    public:
     Socket();
-    ~Socket() = default;
+    Socket(std::string, size_t);
 
-    void bind(std::string, uint32_t);
+    ~Socket();
+
+    void bind(std::string, size_t);
     void listen();
     std::shared_ptr<Socket> accept();
     std::string recv();
