@@ -1,14 +1,13 @@
 #include "abstract_handler.hpp"
 
-#include "requests/request.hpp"
+#include "requests/request_parser.hpp"
 
-AbstractClientHandler::AbstractClientHandler(std::shared_ptr<Socket> client)
-        : socket(client), account() {}
+AbstractClientHandler::AbstractClientHandler(std::shared_ptr<Socket> connection)
+        : socket(connection), account() {
+            socket->setCallback([this](const std::string& data){
 
-AbstractClientHandler::AbstractClientHandler(const std::string& host, size_t port)
-        : AbstractClientHandler(std::make_shared<Socket>()) {
-    socket->bind(host, port);
-}
+            });
+        }
 
 std::shared_ptr<Account> AbstractClientHandler::getAccount() {
     return account;

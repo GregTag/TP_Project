@@ -9,7 +9,7 @@ class RequestParser {
    public:
     RequestParser() = default;
 
-    std::shared_ptr<Request> parse(std::stringstream& data);
+    std::shared_ptr<Request> parse(const std::string& data);
 
    private:
     MessagesFacade message_facade;

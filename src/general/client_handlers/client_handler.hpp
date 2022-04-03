@@ -4,7 +4,7 @@
 class ClientsideHandler : public AbstractClientHandler,
                           std::enable_shared_from_this<ClientsideHandler> {
    public:
-    ClientsideHandler(const std::string& host, size_t port);
+    ClientsideHandler(std::shared_ptr<Socket>);
     virtual ~ClientsideHandler() = default;
 
     void receive(std::shared_ptr<Request>) override;

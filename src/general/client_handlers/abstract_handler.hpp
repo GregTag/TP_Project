@@ -2,7 +2,7 @@
 #include <memory>
 
 #include "account.hpp"
-#include "socket.hpp"
+#include "socket/socket.hpp"
 
 class Request;
 class Message;
@@ -10,7 +10,6 @@ class Message;
 class AbstractClientHandler {
    public:
     AbstractClientHandler(std::shared_ptr<Socket>);
-    AbstractClientHandler(const std::string& host, size_t port);
     virtual ~AbstractClientHandler() = default;
 
     std::shared_ptr<Account> getAccount();

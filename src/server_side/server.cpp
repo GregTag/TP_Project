@@ -1,13 +1,24 @@
 #include "server.hpp"
 
-Server::Server(const std::string& host, size_t port, const std::string& path)
-        : path_to_room_storage(path) {}
+Server::Server(boost::asio::io_context& io, size_t port, const std::string& path)
+        : acceptor(io, tcp::endpoint(tcp::v4(), port)), path_to_room_storage(path) {
+    startListen();
+}
 
 Server::~Server() {
     stopServer();
 }
 
-void Server::startListen() {}
+void Server::startListen() {
+    std::shared_ptr<Socket> connection = std::make_shared<Socket>(acceptor.get_executor());
+    acceptor.async_accept(
+            connection->getSocket(), [this, connection](const boost::system::error_code& error) {
+                if (!error) {
+                    anonymous.push_back(std::make_shared<ServersideClientHandler>(connection));
+                }
+                startListen();
+            });
+}
 
 std::shared_ptr<Room> Server::getRoom(size_t room_id) {
     return rooms.at(room_id);

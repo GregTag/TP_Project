@@ -2,8 +2,8 @@
 
 #include "requests/request.hpp"
 
-ClientsideHandler::ClientsideHandler(const std::string& host, size_t port)
-        : AbstractClientHandler(host, port) {}
+ClientsideHandler::ClientsideHandler(std::shared_ptr<Socket> socket)
+        : AbstractClientHandler(socket) {}
 
 void ClientsideHandler::receive(std::shared_ptr<Request> request) {
     request->handle(shared_from_this());
