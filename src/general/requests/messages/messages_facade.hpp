@@ -13,6 +13,7 @@ class MessagesFacade {
 
     MessagesFacade& createBase(MessageTypes);
     MessagesFacade& addTime();
+    MessagesFacade& addTime(size_t ts);
     MessagesFacade& addRoom(size_t room);
     MessagesFacade& addSender(const std::string& name);
     MessagesFacade& addText(const std::string& text);

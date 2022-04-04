@@ -16,23 +16,21 @@ void Socket::connect(const std::string& host, size_t port) {
 }
 
 void Socket::startCommunicate() {
-    boost::asio::async_read_until(socket, buffer, '\n',
-                                  [this](const boost::system::error_code& error, size_t size) {
-                                      if (!error) {
-                                          std::istream is(&buffer);
-                                          std::string line;
-                                          std::getline(is, line, '\n');
-                                          // TODO: make it asynchronous
-                                          callback(line);
-                                          startCommunicate();
-                                      } else {
-                                          std::cerr << error.what() << std::endl;
-                                      }
-                                  });
+    boost::asio::async_read_until(
+            socket, buffer, '\n', [this](const boost::system::error_code& error, size_t size) {
+                if (!error) {
+                    std::istream is(&buffer);
+                    std::string line;
+                    std::getline(is, line, '\n');
+                    boost::asio::post([this, line = std::move(line)]() { callback(line); });
+                    startCommunicate();
+                } else {
+                    std::cerr << error.what() << std::endl;
+                }
+            });
 }
 
 void Socket::send(const std::string& data) {
-    std::cout << "!";
     boost::asio::async_write(socket, boost::asio::buffer(data + '\n'),
                              [](const boost::system::error_code& error, size_t size) {
                                  if (error) {

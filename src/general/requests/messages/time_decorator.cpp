@@ -1,7 +1,10 @@
 #include "time_decorator.hpp"
 
 TimeDecorator::TimeDecorator(std::shared_ptr<Message> message)
-        : PropertiesDecorator(message), timestamp(time(nullptr)) {}
+        : TimeDecorator(message, time(nullptr)) {}
+
+TimeDecorator::TimeDecorator(std::shared_ptr<Message> message, time_t ts)
+        : PropertiesDecorator(message), timestamp(ts) {}
 
 std::string TimeDecorator::getQuery() {
     return wrapper->getQuery() + Request::separator +

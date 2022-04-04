@@ -19,6 +19,11 @@ MessagesFacade& MessagesFacade::addTime() {
     return *this;
 }
 
+MessagesFacade& MessagesFacade::addTime(size_t ts) {
+    result = std::make_shared<TimeDecorator>(result, ts);
+    return *this;
+}
+
 MessagesFacade& MessagesFacade::addRoom(size_t room) {
     result = std::make_shared<RoomDecorator>(result, room);
     return *this;
