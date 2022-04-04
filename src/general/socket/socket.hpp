@@ -18,6 +18,8 @@ class Socket {
 
     ~Socket() = default;
 
+    void connect(const std::string& host, size_t port);
+
     tcp::socket& getSocket() {
         return socket;
     }
