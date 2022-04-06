@@ -5,7 +5,7 @@
 #include "permissions.hpp"
 #include "room.hpp"
 
-class Server {
+class Server : public std::enable_shared_from_this<Server> {
    public:
     Server(boost::asio::io_context& io, size_t port, const std::string& path);
     ~Server();

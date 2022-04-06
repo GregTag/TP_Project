@@ -7,8 +7,11 @@ class PrivateDecorator : public PropertiesDecorator {
     PrivateDecorator(std::shared_ptr<Message> message, size_t addressee_id);
     virtual ~PrivateDecorator() = default;
 
-    std::string getQuery() override;
+    std::string getQuery() const override;
     void handle(std::shared_ptr<ServersideClientHandler> handler) override;
+    void handle(std::shared_ptr<ClientsideHandler> handler) override;
+
+    size_t getAddressee() const;
 
    private:
     size_t addressee_id;

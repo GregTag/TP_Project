@@ -2,8 +2,9 @@
 
 #include "requests/request.hpp"
 
-ServersideClientHandler::ServersideClientHandler(std::shared_ptr<Socket> client)
-        : AbstractClientHandler(client) {}
+ServersideClientHandler::ServersideClientHandler(std::shared_ptr<Socket> client,
+                                                 std::weak_ptr<Server> server)
+        : AbstractClientHandler(client), server(server) {}
 
 std::shared_ptr<Room> ServersideClientHandler::getRoom(size_t room_id) {
     return std::shared_ptr<Room>(rooms.at(room_id));

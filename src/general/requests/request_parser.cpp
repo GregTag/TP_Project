@@ -8,7 +8,6 @@ std::shared_ptr<Request> RequestParser::parse(const std::string& data) {
             return parseMessage();
         case RequestTypes::SignIn:
             return std::make_shared<SignInRequest>(readString(), readString());
-
         case RequestTypes::SignUp:
             return std::make_shared<SignUpRequest>(readString(), readString());
     }

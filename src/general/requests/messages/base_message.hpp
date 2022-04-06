@@ -9,12 +9,12 @@ class BaseMessage : public Message {
     explicit BaseMessage(MessageTypes type);
     virtual ~BaseMessage() = default;
 
-    size_t getRoom() override;
-    std::string getQuery() override;
+    size_t getRoom() const override;
+    std::string getQuery() const override;
     void handle(std::shared_ptr<ServersideClientHandler> handler) override;
     void handle(std::shared_ptr<ClientsideHandler> handler) override;
 
-    MessageTypes getType();
+    MessageTypes getType() const;
 
    private:
     MessageTypes type;

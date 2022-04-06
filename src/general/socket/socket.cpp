@@ -25,7 +25,7 @@ void Socket::startCommunicate() {
                     boost::asio::post([this, line = std::move(line)]() { callback(line); });
                     startCommunicate();
                 } else {
-                    std::cerr << error.what() << std::endl;
+                    Logger::err() << error.what() << std::endl;
                 }
             });
 }
@@ -34,9 +34,8 @@ void Socket::send(const std::string& data) {
     boost::asio::async_write(socket, boost::asio::buffer(data + '\n'),
                              [](const boost::system::error_code& error, size_t size) {
                                  if (error) {
-                                     std::cerr << error.what() << std::endl;
+                                     Logger::err() << error.what() << std::endl;
                                  }
-                                 std::cout << size << std::endl;
                              });
 }
 

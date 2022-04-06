@@ -3,7 +3,7 @@
 AuthorizationRequest::AuthorizationRequest(const std::string& name, const std::string& password)
         : account(std::make_shared<Account>(0, name, password)) {}
 
-std::string AuthorizationRequest::getQuery() {
+std::string AuthorizationRequest::getQuery() const {
     return account->getName() + Request::separator + account->getPasswordHash();
 }
 

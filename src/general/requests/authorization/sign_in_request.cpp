@@ -3,7 +3,7 @@
 SignInRequest::SignInRequest(const std::string& name, const std::string& password_hash)
         : AuthorizationRequest(name, password_hash) {}
 
-std::string SignInRequest::getQuery() {
+std::string SignInRequest::getQuery() const {
     return std::to_string(size_t(RequestTypes::SignIn)) + Request::separator +
            AuthorizationRequest::getQuery();
 }

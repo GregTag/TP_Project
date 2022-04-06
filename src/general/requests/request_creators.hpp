@@ -1,5 +1,4 @@
 #pragma once
-
 #include "requests/messages/messages_facade.hpp"
 
 class RequestCreators {

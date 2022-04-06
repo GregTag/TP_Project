@@ -5,6 +5,8 @@
 #include <memory>
 #include <string>
 
+#include "log.hpp"
+
 using boost::asio::ip::tcp;
 
 class Socket {

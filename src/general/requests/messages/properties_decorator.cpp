@@ -2,11 +2,11 @@
 
 PropertiesDecorator::PropertiesDecorator(std::shared_ptr<Message> message) : wrapper(message) {}
 
-size_t PropertiesDecorator::getRoom() {
+size_t PropertiesDecorator::getRoom() const {
     return wrapper->getRoom();
 }
 
-std::string PropertiesDecorator::getQuery() {
+std::string PropertiesDecorator::getQuery() const {
     return wrapper->getQuery();
 }
 

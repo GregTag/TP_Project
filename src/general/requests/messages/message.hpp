@@ -5,5 +5,5 @@ enum class MessageProperties { Type, Time, Room, Sender, Text, Private };
 
 class Message : public Request {
    public:
-    virtual size_t getRoom() = 0;
+    virtual size_t getRoom() const = 0;
 };

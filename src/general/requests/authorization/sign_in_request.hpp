@@ -6,6 +6,6 @@ class SignInRequest : public AuthorizationRequest {
     explicit SignInRequest(const std::string& name, const std::string& password_hash);
     virtual ~SignInRequest() = default;
 
-    std::string getQuery() override;
+    std::string getQuery() const override;
     void handle(std::shared_ptr<ServersideClientHandler> handler) override;
 };

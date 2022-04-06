@@ -1,9 +1,10 @@
 #include "client_handler.hpp"
 
-#include "requests/request.hpp"
+#include "requests/request_creators.hpp"
 
-ClientsideHandler::ClientsideHandler(std::shared_ptr<Socket> socket)
-        : AbstractClientHandler(socket) {}
+ClientsideHandler::ClientsideHandler(std::shared_ptr<Socket> socket,
+                                     std::shared_ptr<MessageRenderer> renderer)
+        : AbstractClientHandler(socket), renderer(renderer) {}
 
 void ClientsideHandler::receive(std::shared_ptr<Request> request) {
     request->handle(shared_from_this());
@@ -20,6 +21,10 @@ std::string ClientsideHandler::getHistory(size_t) {
 std::shared_ptr<std::vector<std::pair<size_t, std::string>>> ClientsideHandler::getUsers(
         size_t room) {
     return nullptr;
+}
+
+std::shared_ptr<MessageRenderer> ClientsideHandler::getRenderer() {
+    return renderer;
 }
 
 void ClientsideHandler::send(size_t room, const std::string& text) {}

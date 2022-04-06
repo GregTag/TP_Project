@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 project(TCP_socket)
 
-set(SOURCES socket.cpp)
+set(SOURCES socket.cpp log.cpp)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 find_package(Threads REQUIRED)
