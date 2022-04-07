@@ -3,6 +3,7 @@
 
 #include "client_handlers/server_handler.hpp"
 #include "permissions.hpp"
+#include "requests/request_creator.hpp"
 #include "room.hpp"
 
 class Server : public std::enable_shared_from_this<Server> {

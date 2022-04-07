@@ -8,11 +8,12 @@
 class RequestParser {
    public:
     RequestParser() = default;
+    ~RequestParser() = default;
 
-    std::shared_ptr<Request> parse(const std::string& data);
+    std::shared_ptr<Request> parse(std::string data);
 
    private:
-    size_t readSize();
+    size_t readNumber();
     std::string readString();
     std::shared_ptr<Message> parseMessage();
 

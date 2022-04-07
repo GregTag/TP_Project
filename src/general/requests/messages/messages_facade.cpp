@@ -5,8 +5,10 @@ void MessagesFacade::reset() {
 }
 
 std::shared_ptr<Message> MessagesFacade::getResult() {
-    return result;
+    std::shared_ptr<Message> res = result;
+    Logger::log() << res->getQuery() << std::endl;
     reset();
+    return res;
 }
 
 MessagesFacade& MessagesFacade::createBase(MessageTypes type) {

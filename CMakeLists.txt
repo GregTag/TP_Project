@@ -3,7 +3,7 @@ project(TCP_chat)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY archive)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 file(GLOB_RECURSE SERVER src/server_side/*.cpp)
 file(GLOB_RECURSE CLIENT src/client_side/*.cpp)

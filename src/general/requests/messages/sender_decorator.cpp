@@ -4,8 +4,8 @@ SenderDecorator::SenderDecorator(std::shared_ptr<Message> message, const std::st
         : PropertiesDecorator(message), sender(sender) {}
 
 std::string SenderDecorator::getQuery() const {
-    return wrapper->getQuery() + Request::separator +
-           std::to_string(size_t(MessageProperties::Sender)) + Request::separator + sender;
+    return wrapper->getQuery() + std::to_string(size_t(MessageProperties::Sender)) +
+           Request::separator + sender + Request::separator;
 }
 
 void SenderDecorator::handle(std::shared_ptr<ClientsideHandler> handler) {

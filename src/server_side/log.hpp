@@ -5,6 +5,7 @@
 
 class DebugLogger : public Logger {
    public:
+    ~DebugLogger();
     static void initialize(std::string path_to_log_file);
 
    protected:

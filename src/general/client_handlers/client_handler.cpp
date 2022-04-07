@@ -1,6 +1,6 @@
 #include "client_handler.hpp"
 
-#include "requests/request_creators.hpp"
+#include "requests/request_creator.hpp"
 
 ClientsideHandler::ClientsideHandler(std::shared_ptr<Socket> socket,
                                      std::shared_ptr<MessageRenderer> renderer)

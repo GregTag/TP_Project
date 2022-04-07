@@ -5,7 +5,7 @@
 #include <sstream>
 
 #include "client_handlers/client_handler.hpp"
-#include "requests/request_creators.hpp"
+#include "requests/messages/all_messages.hpp"
 
 class ConsoleRenderer : public MessageRenderer {
    public:

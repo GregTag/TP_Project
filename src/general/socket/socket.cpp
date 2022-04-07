@@ -22,7 +22,8 @@ void Socket::startCommunicate() {
                     std::istream is(&buffer);
                     std::string line;
                     std::getline(is, line, '\n');
-                    boost::asio::post([this, line = std::move(line)]() { callback(line); });
+                    boost::asio::post(
+                            [this, line = std::move(line)]() { callback(std::move(line)); });
                     startCommunicate();
                 } else {
                     Logger::err() << error.what() << std::endl;

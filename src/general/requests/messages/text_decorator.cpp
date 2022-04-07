@@ -4,8 +4,8 @@ TextDecorator::TextDecorator(std::shared_ptr<Message> message, const std::string
         : PropertiesDecorator(message), text(text) {}
 
 std::string TextDecorator::getQuery() const {
-    return wrapper->getQuery() + Request::separator +
-           std::to_string(size_t(MessageProperties::Text)) + Request::separator + text;
+    return wrapper->getQuery() + std::to_string(size_t(MessageProperties::Text)) +
+           Request::separator + text + Request::separator;
 }
 
 void TextDecorator::handle(std::shared_ptr<ClientsideHandler> handler) {

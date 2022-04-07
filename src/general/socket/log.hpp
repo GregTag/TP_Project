@@ -5,6 +5,8 @@
 
 class Logger {
    public:
+    virtual ~Logger() = default;
+
     static std::ostream& log();
     static std::ostream& err();
 

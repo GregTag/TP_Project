@@ -8,9 +8,8 @@ size_t RoomDecorator::getRoom() const {
 }
 
 std::string RoomDecorator::getQuery() const {
-    return wrapper->getQuery() + Request::separator +
-           std::to_string(size_t(MessageProperties::Room)) + Request::separator +
-           std::to_string(room);
+    return wrapper->getQuery() + std::to_string(size_t(MessageProperties::Room)) +
+           Request::separator + std::to_string(room) + Request::separator;
 }
 
 void RoomDecorator::handle(std::shared_ptr<ClientsideHandler> handler) {

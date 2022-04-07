@@ -6,12 +6,15 @@
 
 class Request;
 class Message;
+class RequestParser;
+class RequestCreator;
 
 class AbstractClientHandler {
    public:
     AbstractClientHandler(std::shared_ptr<Socket>);
     virtual ~AbstractClientHandler() = default;
 
+    std::shared_ptr<RequestCreator> getCreator();
     std::shared_ptr<Account> getAccount();
     void setAccount(std::shared_ptr<Account>);
 
@@ -20,9 +23,11 @@ class AbstractClientHandler {
 
     virtual void receive(std::shared_ptr<Request>) = 0;
 
-   private:
-    std::shared_ptr<Socket> socket;
-
    protected:
     std::shared_ptr<Account> account;
+
+   private:
+    std::shared_ptr<Socket> socket;
+    std::shared_ptr<RequestParser> parser;
+    std::shared_ptr<RequestCreator> creator;
 };
