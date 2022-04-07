@@ -6,8 +6,7 @@
 class Room;
 class Server;
 
-class ServersideClientHandler : public AbstractClientHandler,
-                                std::enable_shared_from_this<ServersideClientHandler> {
+class ServersideClientHandler : public AbstractClientHandler {
    public:
     ServersideClientHandler(std::shared_ptr<Socket>, std::weak_ptr<Server>);
     virtual ~ServersideClientHandler() = default;

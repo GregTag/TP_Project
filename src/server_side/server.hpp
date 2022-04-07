@@ -14,7 +14,7 @@ class Server : public std::enable_shared_from_this<Server> {
     std::shared_ptr<Room> getRoom(size_t room_id);
     std::shared_ptr<Room> createRoom(size_t room_id);
     std::shared_ptr<PermissionsBank> getPermissonsBank();
-    void createClientHandler(std::shared_ptr<ServersideClientHandler> handler);
+    void registerClient(std::shared_ptr<ServersideClientHandler> handler);
     void serverBroadcast(const std::string& text);
     void stopServer();
 
@@ -23,8 +23,8 @@ class Server : public std::enable_shared_from_this<Server> {
 
     tcp::acceptor acceptor;
     std::unordered_map<size_t, std::shared_ptr<Room>> rooms;
-    std::list<std::shared_ptr<ServersideClientHandler>> anonymous;
-    std::unordered_map<size_t, std::shared_ptr<ServersideClientHandler>> clients;
+    std::list<std::shared_ptr<ServersideClientHandler>> clients;
+    std::unordered_map<size_t, std::weak_ptr<ServersideClientHandler>> client_by_id;
     std::shared_ptr<PermissionsBank> permissons_bank;
 
     const std::string path_to_room_storage;

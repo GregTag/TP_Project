@@ -11,7 +11,7 @@ void Room::leave(std::shared_ptr<ServersideClientHandler> client) {
 }
 
 void Room::broadcast(std::shared_ptr<Message> message) {
-    for (auto client : clients) {
+    for (auto& client : clients) {
         client.second.lock()->sendRequest(std::static_pointer_cast<Request>(message));
     }
 }

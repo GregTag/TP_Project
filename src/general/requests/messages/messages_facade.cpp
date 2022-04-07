@@ -6,7 +6,6 @@ void MessagesFacade::reset() {
 
 std::shared_ptr<Message> MessagesFacade::getResult() {
     std::shared_ptr<Message> res = result;
-    Logger::log() << res->getQuery() << std::endl;
     reset();
     return res;
 }

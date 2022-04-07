@@ -15,5 +15,5 @@ std::unordered_map<size_t, std::weak_ptr<Room>>& ServersideClientHandler::getRoo
 }
 
 void ServersideClientHandler::receive(std::shared_ptr<Request> request) {
-    request->handle(shared_from_this());
+    request->handle(std::static_pointer_cast<ServersideClientHandler>(shared_from_this()));
 }

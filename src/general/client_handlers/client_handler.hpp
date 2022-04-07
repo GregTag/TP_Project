@@ -2,8 +2,7 @@
 #include "abstract_handler.hpp"
 #include "renderer.hpp"
 
-class ClientsideHandler : public AbstractClientHandler,
-                          std::enable_shared_from_this<ClientsideHandler> {
+class ClientsideHandler : public AbstractClientHandler {
    public:
     ClientsideHandler(std::shared_ptr<Socket>, std::shared_ptr<MessageRenderer>);
     virtual ~ClientsideHandler() = default;

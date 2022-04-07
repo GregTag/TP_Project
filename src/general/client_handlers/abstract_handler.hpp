@@ -9,7 +9,7 @@ class Message;
 class RequestParser;
 class RequestCreator;
 
-class AbstractClientHandler {
+class AbstractClientHandler : public std::enable_shared_from_this<AbstractClientHandler> {
    public:
     AbstractClientHandler(std::shared_ptr<Socket>);
     virtual ~AbstractClientHandler() = default;

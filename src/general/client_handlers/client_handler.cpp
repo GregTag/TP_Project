@@ -7,7 +7,7 @@ ClientsideHandler::ClientsideHandler(std::shared_ptr<Socket> socket,
         : AbstractClientHandler(socket), renderer(renderer) {}
 
 void ClientsideHandler::receive(std::shared_ptr<Request> request) {
-    request->handle(shared_from_this());
+    request->handle(std::static_pointer_cast<ClientsideHandler>(shared_from_this()));
 }
 
 void ClientsideHandler::signIn(const std::string& name, const std::string& password) {}
