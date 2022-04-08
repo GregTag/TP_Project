@@ -1,11 +1,14 @@
 #pragma once
+#include <boost/iostreams/stream.hpp>
+#include <boost/iostreams/tee.hpp>
 #include <fstream>
+#include <iostream>
 
 #include "socket/log.hpp"
 
-class DebugLogger : public Logger {
+class ServerLogger : public Logger {
    public:
-    ~DebugLogger();
+    ~ServerLogger();
     static void initialize(std::string path_to_log_file);
 
    protected:
@@ -13,7 +16,10 @@ class DebugLogger : public Logger {
     std::ostream& getErrorStream() override;
 
    private:
-    DebugLogger(std::string);
+    using Device = boost::iostreams::tee_device<std::ostream, std::ofstream>;
+    ServerLogger(std::string);
 
-    std::fstream file;
+    std::ofstream file;
+    Device device;
+    boost::iostreams::stream<Device> stream;
 };

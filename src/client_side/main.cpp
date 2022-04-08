@@ -4,8 +4,6 @@
 #include "console_renderer.hpp"
 #include "log.hpp"
 
-std::shared_ptr<ClientsideHandler> client;
-
 int main(int argc, char* argv[]) {
     DebugLogger::initialize("log_client.txt");
 
@@ -18,7 +16,7 @@ int main(int argc, char* argv[]) {
     for (char** it = argv; it != argv + argc; ++it) args.emplace_back(*it);
 
     boost::asio::io_context io;
-    client = std::make_shared<ClientsideHandler>(
+    std::shared_ptr<ClientsideHandler> client = std::make_shared<ClientsideHandler>(
             std::make_shared<Socket>(io.get_executor(), args[1], std::stoul(args[2])),
             std::make_shared<ConsoleRenderer>());
     Logger::log() << "Client created" << std::endl;

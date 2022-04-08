@@ -15,6 +15,10 @@ void Socket::connect(const std::string& host, size_t port) {
     socket.connect(tcp::endpoint(boost::asio::ip::address::from_string(host), port));
 }
 
+Socket::~Socket() {
+    close();
+}
+
 void Socket::startCommunicate() {
     boost::asio::async_read_until(
             socket, buffer, '\n', [this](const boost::system::error_code& error, size_t size) {

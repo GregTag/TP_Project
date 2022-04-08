@@ -18,7 +18,7 @@ class Socket {
     Socket() = delete;
     Socket(const Socket&) = delete;
 
-    ~Socket() = default;
+    ~Socket();
 
     void connect(const std::string& host, size_t port);
 

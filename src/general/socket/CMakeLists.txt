@@ -5,7 +5,7 @@ set(SOURCES socket.cpp log.cpp)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 find_package(Threads REQUIRED)
-find_package(Boost 1.68 REQUIRED)
+find_package(Boost 1.78 REQUIRED)
 
 add_library(tcp_socket STATIC ${SOURCES})
 

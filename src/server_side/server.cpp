@@ -18,6 +18,7 @@ void Server::startListen() {
                                                                                 weak_from_this()));
                     clients.back()->sendRequest(
                             clients.back()->getCreator()->createInfoMessage("Welcome!"));
+                    Logger::log() << "New connection" << std::endl;
                 }
                 startListen();
             });
@@ -40,6 +41,10 @@ void Server::registerClient(std::shared_ptr<ServersideClientHandler> handler) {
     client_by_id.emplace(handler->getAccount()->getId(), handler);
 }
 
-void Server::serverBroadcast(const std::string& text) {}
+void Server::serverBroadcast(const std::string& text) {
+    for (auto& client : clients) {
+        client->sendRequest(client->getCreator()->createInfoMessage(text));
+    }
+}
 
 void Server::stopServer() {}
