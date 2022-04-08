@@ -1,5 +1,5 @@
 #pragma once
-#include "requests/messages/messages_facade.hpp"
+#include "requests/messages/messages_builder.hpp"
 
 class RequestCreator {
    public:
@@ -13,5 +13,5 @@ class RequestCreator {
     std::shared_ptr<Message> createLeaveMessage(size_t room, const std::string& name);
 
    private:
-    MessagesFacade message_facade;
+    MessagesBuilder message_facade;
 };
