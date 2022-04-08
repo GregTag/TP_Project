@@ -1,14 +1,10 @@
-#include <boost/make_shared.hpp>
-#include <boost/smart_ptr/atomic_shared_ptr.hpp>
+#include <atomic>
 #include <iostream>
 
-struct A {
-    int a;
-
-    A(int a) : a(a) {}
-};
+#include "account.hpp"
 
 int main() {
-    boost::atomic_shared_ptr<A> ptr = boost::make_shared<A>(5);
-    std::cout << ptr.load()->a << "\n";
+    std::shared_ptr<Account> acc = std::make_shared<Account>();
+    // std::cout << acc->getName() << std::endl;
+    std::cout << std::atomic_load<Account>(&acc)->getName() << std::endl;
 }

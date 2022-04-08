@@ -8,8 +8,8 @@ std::string PrivateDecorator::getQuery() const {
            Request::separator + std::to_string(addressee_id) + Request::separator;
 }
 
-void PrivateDecorator::handle(std::shared_ptr<ServersideClientHandler> handler) {
-    handler->getRoom(wrapper->getRoom())->getClient(addressee_id)->sendRequest(shared_from_this());
+void PrivateDecorator::handle(std::shared_ptr<ServersideHandler> handler) {
+    handler->onPrivateMessage(std::static_pointer_cast<PrivateDecorator>(shared_from_this()));
 }
 
 void PrivateDecorator::handle(std::shared_ptr<ClientsideHandler> handler) {

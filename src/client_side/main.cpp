@@ -22,5 +22,21 @@ int main(int argc, char* argv[]) {
     Logger::log() << "Client created" << std::endl;
     client->startReceiving();
 
+    Logger::log() << "In main" << std::endl << client->getAccount()->getName() << std::endl;
+
+    std::thread t([client]() {
+        std::string command;
+        while (!std::cin.eof()) {
+            std::cin >> command;
+            if (command == "join") {
+                size_t room;
+                std::cin >> room;
+                client->join(room);
+            } else {
+                std::cout << "Unknown command." << std::endl;
+            }
+        }
+    });
+
     io.run();
 }

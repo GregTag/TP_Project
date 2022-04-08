@@ -7,7 +7,7 @@ std::string SignUpRequest::getQuery() const {
     return std::to_string(size_t(RequestTypes::SignIn)) + Request::separator +
            AuthorizationRequest::getQuery();
 }
-void SignUpRequest::handle(std::shared_ptr<ServersideClientHandler> handler) {
+void SignUpRequest::handle(std::shared_ptr<ServersideHandler> handler) {
     account = AccountsDatabase::getInstance()->createAccount(account->getName(),
                                                              account->getPasswordHash());
     handler->setAccount(account);

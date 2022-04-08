@@ -1,19 +1,28 @@
 #include "server_handler.hpp"
 
+#include "requests/messages/private_decorator.hpp"
 #include "requests/request.hpp"
+#include "room.hpp"
 
-ServersideClientHandler::ServersideClientHandler(std::shared_ptr<Socket> client,
-                                                 std::weak_ptr<Server> server)
-        : AbstractClientHandler(client), server(server) {}
+ServersideHandler::ServersideHandler(std::shared_ptr<Socket> client, std::weak_ptr<Server> server)
+        : AbstractHandler(client), server(server) {}
 
-std::shared_ptr<Room> ServersideClientHandler::getRoom(size_t room_id) {
+std::shared_ptr<Room> ServersideHandler::getRoom(size_t room_id) {
     return std::shared_ptr<Room>(rooms.at(room_id));
 }
 
-std::unordered_map<size_t, std::weak_ptr<Room>>& ServersideClientHandler::getRooms() {
+std::unordered_map<size_t, std::weak_ptr<Room>>& ServersideHandler::getRooms() {
     return rooms;
 }
 
-void ServersideClientHandler::receive(std::shared_ptr<Request> request) {
-    request->handle(std::static_pointer_cast<ServersideClientHandler>(shared_from_this()));
+void ServersideHandler::onMessage(std::shared_ptr<Message> msg) {
+    getRoom(msg->getRoom())->broadcast(msg);
+}
+
+void ServersideHandler::onPrivateMessage(std::shared_ptr<PrivateDecorator> msg) {
+    getRoom(msg->getRoom())->getClient(msg->getAddressee())->sendRequest(msg);
+}
+
+void ServersideHandler::receive(std::shared_ptr<Request> request) {
+    request->handle(std::static_pointer_cast<ServersideHandler>(shared_from_this()));
 }

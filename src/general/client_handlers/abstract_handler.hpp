@@ -9,10 +9,10 @@ class Message;
 class RequestParser;
 class RequestCreator;
 
-class AbstractClientHandler : public std::enable_shared_from_this<AbstractClientHandler> {
+class AbstractHandler : public std::enable_shared_from_this<AbstractHandler> {
    public:
-    AbstractClientHandler(std::shared_ptr<Socket>);
-    virtual ~AbstractClientHandler() = default;
+    AbstractHandler(std::shared_ptr<Socket>);
+    virtual ~AbstractHandler() = default;
 
     std::shared_ptr<RequestCreator> getCreator();
     std::shared_ptr<Account> getAccount();
@@ -23,10 +23,8 @@ class AbstractClientHandler : public std::enable_shared_from_this<AbstractClient
 
     virtual void receive(std::shared_ptr<Request>) = 0;
 
-   protected:
-    std::shared_ptr<Account> account;
-
    private:
+    std::shared_ptr<Account> account;
     std::shared_ptr<Socket> socket;
     std::shared_ptr<RequestParser> parser;
     std::shared_ptr<RequestCreator> creator;

@@ -7,5 +7,5 @@ class SignUpRequest : public AuthorizationRequest {
     virtual ~SignUpRequest() = default;
 
     std::string getQuery() const override;
-    void handle(std::shared_ptr<ServersideClientHandler> handler) override;
+    void handle(std::shared_ptr<ServersideHandler> handler) override;
 };

@@ -7,7 +7,7 @@ std::string SignInRequest::getQuery() const {
     return std::to_string(size_t(RequestTypes::SignIn)) + Request::separator +
            AuthorizationRequest::getQuery();
 }
-void SignInRequest::handle(std::shared_ptr<ServersideClientHandler> handler) {
+void SignInRequest::handle(std::shared_ptr<ServersideHandler> handler) {
     auto saved = AccountsDatabase::getInstance()->findAccountByName(account->getName());
     if (saved->getPasswordHash() == account->getPasswordHash()) {
         account = saved;
