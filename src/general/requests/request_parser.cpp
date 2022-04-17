@@ -2,7 +2,6 @@
 
 std::shared_ptr<Request> RequestParser::parse(std::string data) {
     data.pop_back();
-    Logger::log() << data << std::endl;
     ss = std::stringstream(data);
     RequestTypes request_type = RequestTypes(readNumber());
     switch (request_type) {

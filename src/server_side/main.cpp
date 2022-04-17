@@ -5,7 +5,7 @@ int main(int argc, char* argv[]) {
     ServerLogger::initialize("log_server.txt");
 
     if (argc != 3) {
-        std::cerr << "Usage: " << argv[0] << " <port> <path to rooms>\n";
+        std::cerr << "Usage: " << argv[0] << " <port> <path/to/room_storage>\n";
         return 1;
     }
 

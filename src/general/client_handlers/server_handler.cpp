@@ -16,7 +16,12 @@ std::unordered_map<size_t, std::weak_ptr<Room>>& ServersideHandler::getRooms() {
 }
 
 void ServersideHandler::onMessage(std::shared_ptr<Message> msg) {
-    getRoom(msg->getRoom())->broadcast(msg);
+    if (msg->getType() == MessageTypes::Join) {
+        Logger::log() << "New member in room " << msg->getRoom() << std::endl;
+        // But we have no rooms yet
+    } else {
+        getRoom(msg->getRoom())->broadcast(msg);
+    }
 }
 
 void ServersideHandler::onPrivateMessage(std::shared_ptr<PrivateDecorator> msg) {

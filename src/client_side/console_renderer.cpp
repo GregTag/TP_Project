@@ -23,10 +23,11 @@ void ConsoleRenderer::baseMessageRender(std::shared_ptr<Message> msg) {
     if (!sender.empty()) std::cout << sender << " ";
 
     if (type == MessageTypes::Join || type == MessageTypes::Leave) {
-        std::cout << (type == MessageTypes::Join ? "joined.\n" : "leaved.\n");
+        std::cout << (type == MessageTypes::Join ? "joined." : "leaved.");
     } else {
         if (!text.empty()) std::cout << (is_private ? "[P]: " : ": ") << text;
     }
+    std::cout << std::endl;
 
     reset();
 }
@@ -49,7 +50,7 @@ void ConsoleRenderer::senderRender(std::shared_ptr<Message> msg) {
 }
 
 void ConsoleRenderer::textRender(std::shared_ptr<Message> msg) {
-    text += std::static_pointer_cast<TextDecorator>(msg)->getText() + "\n";
+    text += std::static_pointer_cast<TextDecorator>(msg)->getText();
 }
 
 void ConsoleRenderer::privateRender(std::shared_ptr<Message> msg) {

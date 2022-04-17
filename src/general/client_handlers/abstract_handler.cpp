@@ -30,3 +30,7 @@ void AbstractHandler::sendRequest(std::shared_ptr<Request> request) {
 void AbstractHandler::startReceiving() {
     socket->startCommunicate();
 }
+
+void AbstractHandler::exit() {
+    socket->close();
+}

@@ -18,6 +18,7 @@ void Server::startListen() {
             clients.back()->sendRequest(
                     clients.back()->getCreator()->createInfoMessage("Welcome!"));
             Logger::log() << "New connection" << std::endl;
+            connection->startCommunicate();
         }
         startListen();
     });
