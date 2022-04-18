@@ -12,11 +12,11 @@ class Room {
 
     ~Room() = default;
 
-    void join(std::shared_ptr<ServersideClientHandler>);
-    void leave(std::shared_ptr<ServersideClientHandler>);
+    void join(std::shared_ptr<ServersideHandler>);
+    void leave(std::shared_ptr<ServersideHandler>);
     void broadcast(std::shared_ptr<Message>);
     size_t getId();
-    std::shared_ptr<ServersideClientHandler> getClient(size_t id);
+    std::shared_ptr<ServersideHandler> getClient(size_t id);
     std::string getClientsList();
     std::string readHistory(size_t lines);
     void writeToHistory(std::shared_ptr<Message> message);
@@ -24,5 +24,5 @@ class Room {
    private:
     size_t room_id;
     std::fstream history;
-    std::unordered_map<size_t, std::weak_ptr<ServersideClientHandler>> clients;
+    std::unordered_map<size_t, std::weak_ptr<ServersideHandler>> clients;
 };

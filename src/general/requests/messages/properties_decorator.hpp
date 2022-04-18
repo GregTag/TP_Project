@@ -6,9 +6,10 @@ class PropertiesDecorator : public Message {
     explicit PropertiesDecorator(std::shared_ptr<Message> message);
     virtual ~PropertiesDecorator() = default;
 
-    size_t getRoom() override;
-    std::string getQuery() override;
-    void handle(std::shared_ptr<ServersideClientHandler> handler) override;
+    size_t getRoom() const override;
+    MessageTypes getType() const override;
+    std::string getQuery() const override;
+    void handle(std::shared_ptr<ServersideHandler> handler) override;
     void handle(std::shared_ptr<ClientsideHandler> handler) override;
 
    protected:

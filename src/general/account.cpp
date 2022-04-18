@@ -1,6 +1,8 @@
 #include "account.hpp"
 
-Account::Account() : id(0), name("anonymous") {}
+#include "socket/log.hpp"
+
+Account::Account() : id(0), name("anonymous"), password_hash(""), available_rooms(nullptr) {}
 
 Account::Account(size_t id, const std::string& name, const std::string& password_hash,
                  std::shared_ptr<std::vector<size_t>> available_rooms)

@@ -3,7 +3,12 @@
 
 enum class MessageProperties { Type, Time, Room, Sender, Text, Private };
 
+enum class MessageTypes { Chat, Info, Error, Join, Leave };
+
 class Message : public Request {
    public:
-    virtual size_t getRoom() = 0;
+    virtual ~Message() = default;
+
+    virtual size_t getRoom() const = 0;
+    virtual MessageTypes getType() const = 0;
 };

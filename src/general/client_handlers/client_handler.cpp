@@ -1,20 +1,21 @@
 #include "client_handler.hpp"
 
-#include "requests/request.hpp"
+#include "requests/request_creator.hpp"
 
-ClientsideHandler::ClientsideHandler(const std::string& host, size_t port)
-        : AbstractClientHandler(host, port) {}
+ClientsideHandler::ClientsideHandler(std::shared_ptr<Socket> socket,
+                                     std::shared_ptr<MessageRenderer> renderer)
+        : AbstractHandler(socket), renderer(renderer) {}
 
 void ClientsideHandler::receive(std::shared_ptr<Request> request) {
-    request->handle(shared_from_this());
+    request->handle(std::static_pointer_cast<ClientsideHandler>(shared_from_this()));
 }
 
 void ClientsideHandler::signIn(const std::string& name, const std::string& password) {}
 
 void ClientsideHandler::signUp(const std::string& name, const std::string& password) {}
 
-std::string ClientsideHandler::getHistory(size_t) {
-    return "history";
+void ClientsideHandler::join(size_t room) {
+    sendRequest(getCreator()->createJoinMessage(room, getAccount()->getName()));
 }
 
 std::shared_ptr<std::vector<std::pair<size_t, std::string>>> ClientsideHandler::getUsers(
@@ -22,6 +23,15 @@ std::shared_ptr<std::vector<std::pair<size_t, std::string>>> ClientsideHandler::
     return nullptr;
 }
 
-void ClientsideHandler::send(size_t room, const std::string& text) {}
+std::shared_ptr<MessageRenderer> ClientsideHandler::getRenderer() {
+    return renderer;
+}
 
-void ClientsideHandler::sendPrivate(size_t room, size_t user, const std::string& text) {}
+void ClientsideHandler::send(size_t room, const std::string& text) {
+    sendRequest(getCreator()->createChatMessage(room, getAccount()->getName(), text));
+}
+
+void ClientsideHandler::sendPrivate(size_t room, size_t user, const std::string& text) {
+    sendRequest(std::make_shared<PrivateDecorator>(
+            getCreator()->createChatMessage(room, getAccount()->getName(), text), user));
+}

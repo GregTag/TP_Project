@@ -1,25 +1,36 @@
 #include "abstract_handler.hpp"
 
-#include "requests/request.hpp"
+#include "requests/request_creator.hpp"
+#include "requests/request_parser.hpp"
 
-AbstractClientHandler::AbstractClientHandler(std::shared_ptr<Socket> client)
-        : socket(client), account() {}
-
-AbstractClientHandler::AbstractClientHandler(const std::string& host, size_t port)
-        : AbstractClientHandler(std::make_shared<Socket>()) {
-    socket->bind(host, port);
+AbstractHandler::AbstractHandler(std::shared_ptr<Socket> connection)
+        : account(std::make_shared<Account>())
+        , socket(connection)
+        , parser(std::make_shared<RequestParser>())
+        , creator(std::make_shared<RequestCreator>()) {
+    socket->setCallback([this](const std::string& data) { receive(parser->parse(data)); });
 }
 
-std::shared_ptr<Account> AbstractClientHandler::getAccount() {
+std::shared_ptr<RequestCreator> AbstractHandler::getCreator() {
+    return creator;
+}
+
+std::shared_ptr<Account> AbstractHandler::getAccount() {
     return account;
 }
 
-void AbstractClientHandler::setAccount(std::shared_ptr<Account> other) {
+void AbstractHandler::setAccount(std::shared_ptr<Account> other) {
     account = other;
 }
 
-void AbstractClientHandler::sendRequest(std::shared_ptr<Request> request) {
+void AbstractHandler::sendRequest(std::shared_ptr<Request> request) {
     socket->send(request->getQuery());
 }
 
-void AbstractClientHandler::startReceiving() {}
+void AbstractHandler::startReceiving() {
+    socket->startCommunicate();
+}
+
+void AbstractHandler::exit() {
+    socket->close();
+}

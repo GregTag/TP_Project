@@ -1,9 +1,9 @@
 #pragma once
+#include "requests/messages/messages_builder.hpp"
 
-#include "requests/messages/messages_facade.hpp"
-
-class RequestCreators {
-    RequestCreators() = default;
+class RequestCreator {
+   public:
+    RequestCreator() = default;
 
     std::shared_ptr<Message> createChatMessage(size_t room, const std::string& sender,
                                                const std::string& text);
@@ -13,5 +13,5 @@ class RequestCreators {
     std::shared_ptr<Message> createLeaveMessage(size_t room, const std::string& name);
 
    private:
-    MessagesFacade message_facade;
+    MessagesBuilder message_facade;
 };

@@ -1,7 +1,7 @@
-#include "request_creators.hpp"
+#include "request_creator.hpp"
 
-std::shared_ptr<Message> RequestCreators::createChatMessage(size_t room, const std::string& sender,
-                                                            const std::string& text) {
+std::shared_ptr<Message> RequestCreator::createChatMessage(size_t room, const std::string& sender,
+                                                           const std::string& text) {
     return message_facade.createBase(MessageTypes::Chat)
             .addTime()
             .addRoom(room)
@@ -10,15 +10,15 @@ std::shared_ptr<Message> RequestCreators::createChatMessage(size_t room, const s
             .getResult();
 }
 
-std::shared_ptr<Message> RequestCreators::createInfoMessage(const std::string& text) {
+std::shared_ptr<Message> RequestCreator::createInfoMessage(const std::string& text) {
     return message_facade.createBase(MessageTypes::Info).addTime().addText(text).getResult();
 }
 
-std::shared_ptr<Message> RequestCreators::createErrorMessage(const std::string& text) {
+std::shared_ptr<Message> RequestCreator::createErrorMessage(const std::string& text) {
     return message_facade.createBase(MessageTypes::Error).addText(text).getResult();
 }
 
-std::shared_ptr<Message> RequestCreators::createJoinMessage(size_t room, const std::string& name) {
+std::shared_ptr<Message> RequestCreator::createJoinMessage(size_t room, const std::string& name) {
     return message_facade.createBase(MessageTypes::Join)
             .addTime()
             .addRoom(room)
@@ -26,7 +26,7 @@ std::shared_ptr<Message> RequestCreators::createJoinMessage(size_t room, const s
             .getResult();
 }
 
-std::shared_ptr<Message> RequestCreators::createLeaveMessage(size_t room, const std::string& name) {
+std::shared_ptr<Message> RequestCreator::createLeaveMessage(size_t room, const std::string& name) {
     return message_facade.createBase(MessageTypes::Leave)
             .addTime()
             .addRoom(room)

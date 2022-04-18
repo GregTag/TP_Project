@@ -2,16 +2,20 @@
 
 PropertiesDecorator::PropertiesDecorator(std::shared_ptr<Message> message) : wrapper(message) {}
 
-size_t PropertiesDecorator::getRoom() {
+size_t PropertiesDecorator::getRoom() const {
     return wrapper->getRoom();
 }
 
-std::string PropertiesDecorator::getQuery() {
+MessageTypes PropertiesDecorator::getType() const {
+    return wrapper->getType();
+}
+
+std::string PropertiesDecorator::getQuery() const {
     return wrapper->getQuery();
 }
 
-void PropertiesDecorator::handle(std::shared_ptr<ServersideClientHandler> handler) {
-    return wrapper->handle(handler);
+void PropertiesDecorator::handle(std::shared_ptr<ServersideHandler> handler) {
+    handler->onMessage(std::static_pointer_cast<Message>(shared_from_this()));
 }
 
 void PropertiesDecorator::handle(std::shared_ptr<ClientsideHandler> handler) {

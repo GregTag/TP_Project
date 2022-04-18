@@ -7,7 +7,7 @@ class AuthorizationRequest : public Request {
     AuthorizationRequest(const std::string& name, const std::string& password_hash);
     virtual ~AuthorizationRequest() = default;
 
-    std::string getQuery() override;
+    std::string getQuery() const override;
     void handle(std::shared_ptr<ClientsideHandler> handler) override;
 
    protected:
