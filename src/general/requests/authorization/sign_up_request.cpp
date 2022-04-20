@@ -8,8 +8,5 @@ std::string SignUpRequest::getQuery() const {
            AuthorizationRequest::getQuery();
 }
 void SignUpRequest::handle(std::shared_ptr<ServersideHandler> handler) {
-    account = AccountsDatabase::getInstance()->createAccount(account->getName(),
-                                                             account->getPasswordHash());
-    handler->setAccount(account);
-    handler->sendRequest(shared_from_this());
+    handler->onSignUp(std::static_pointer_cast<SignUpRequest>(shared_from_this()));
 }

@@ -11,12 +11,20 @@ Socket::Socket(const boost::asio::any_io_executor& io, const std::string& host, 
 
 Socket::Socket(Socket&& other) : socket(std::move(other.socket)) {}
 
+Socket::~Socket() {
+    if (socket.is_open()) close();
+}
+
 void Socket::connect(const std::string& host, size_t port) {
     socket.connect(tcp::endpoint(boost::asio::ip::make_address(host), port));
 }
 
-Socket::~Socket() {
-    if (socket.is_open()) close();
+tcp::socket& Socket::getSocket() {
+    return socket;
+}
+
+void Socket::setCallback(const std::function<void(const std::string&)>& cb) {
+    callback = cb;
 }
 
 void Socket::startCommunicate() {
@@ -30,6 +38,9 @@ void Socket::startCommunicate() {
                     boost::asio::post(
                             [this, line = std::move(line)]() { callback(std::move(line)); });
                     startCommunicate();
+                } else if (error == boost::asio::error::eof) {
+                    Logger::log() << error.what() << std::endl;
+                    boost::asio::post([this]() { callback(std::string("eof")); });
                 } else {
                     Logger::err() << error.what() << std::endl;
                 }

@@ -8,7 +8,13 @@ AbstractHandler::AbstractHandler(std::shared_ptr<Socket> connection)
         , socket(connection)
         , parser(std::make_shared<RequestParser>())
         , creator(std::make_shared<RequestCreator>()) {
-    socket->setCallback([this](const std::string& data) { receive(parser->parse(data)); });
+    socket->setCallback([this](const std::string& data) {
+        if (data != "eof") {
+            receive(parser->parse(data));
+        } else {
+            destroy();
+        }
+    });
 }
 
 std::shared_ptr<RequestCreator> AbstractHandler::getCreator() {
@@ -34,3 +40,5 @@ void AbstractHandler::startReceiving() {
 void AbstractHandler::exit() {
     socket->close();
 }
+
+void AbstractHandler::destroy() {}

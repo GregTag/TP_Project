@@ -3,7 +3,7 @@
 #include <fstream>
 #include <unordered_map>
 
-#include "client_handlers/server_handler.hpp"
+#include "request_handlers/server_handler.hpp"
 #include "requests/messages/message.hpp"
 
 class Room {

@@ -1,5 +1,4 @@
 #pragma once
-#include "accounts_database.hpp"
 #include "requests/request.hpp"
 
 class AuthorizationRequest : public Request {

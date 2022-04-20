@@ -23,6 +23,7 @@ class AbstractHandler : public std::enable_shared_from_this<AbstractHandler> {
     void exit();
 
     virtual void receive(std::shared_ptr<Request>) = 0;
+    virtual void destroy();
 
    private:
     std::shared_ptr<Account> account;

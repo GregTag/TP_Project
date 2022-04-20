@@ -2,8 +2,8 @@
 #include <memory>
 #include <string>
 
-#include "client_handlers/client_handler.hpp"
-#include "client_handlers/server_handler.hpp"
+#include "request_handlers/client_handler.hpp"
+#include "request_handlers/server_handler.hpp"
 
 enum class RequestTypes { CompoundMessage, SignIn, SignUp };
 

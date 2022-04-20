@@ -8,10 +8,5 @@ std::string SignInRequest::getQuery() const {
            AuthorizationRequest::getQuery();
 }
 void SignInRequest::handle(std::shared_ptr<ServersideHandler> handler) {
-    auto saved = AccountsDatabase::getInstance()->findAccountByName(account->getName());
-    if (saved->getPasswordHash() == account->getPasswordHash()) {
-        account = saved;
-        handler->sendRequest(shared_from_this());
-    }
-    // TODO send error about wrong password
+    handler->onSignIn(std::static_pointer_cast<SignInRequest>(shared_from_this()));
 }

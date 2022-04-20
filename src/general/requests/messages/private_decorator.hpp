@@ -1,6 +1,5 @@
 #pragma once
 #include "properties_decorator.hpp"
-#include "room.hpp"
 
 class PrivateDecorator : public PropertiesDecorator {
    public:

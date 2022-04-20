@@ -21,14 +21,8 @@ class Socket {
     ~Socket();
 
     void connect(const std::string& host, size_t port);
-
-    tcp::socket& getSocket() {
-        return socket;
-    }
-
-    void setCallback(const std::function<void(const std::string&)>& cb) {
-        callback = cb;
-    }
+    tcp::socket& getSocket();
+    void setCallback(const std::function<void(const std::string&)>& cb);
 
     void startCommunicate();
     void send(const std::string& data);
