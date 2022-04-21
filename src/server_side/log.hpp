@@ -8,8 +8,8 @@
 
 class ServerLogger : public Logger {
    public:
-    ~ServerLogger();
-    static void initialize(std::string path_to_log_file);
+    virtual ~ServerLogger();
+    static void initialize(const std::string& path_to_log_file);
 
    protected:
     std::ostream& getLogStream() override;
@@ -17,7 +17,7 @@ class ServerLogger : public Logger {
 
    private:
     using Device = boost::iostreams::tee_device<std::ostream, std::ofstream>;
-    ServerLogger(std::string);
+    ServerLogger(const std::string&);
 
     std::ofstream file;
     Device device;

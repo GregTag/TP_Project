@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <list>
 
+#include "database/simple_database.hpp"
 #include "permissions.hpp"
 #include "request_handlers/server_handler.hpp"
 #include "requests/request_creator.hpp"
@@ -24,11 +25,11 @@ class Server : public std::enable_shared_from_this<Server> {
     void startListen();
 
     const std::filesystem::path path_to_room_storage;
+    bool running;
     tcp::acceptor acceptor;
     std::unordered_map<size_t, std::shared_ptr<Room>> rooms;
     std::unordered_map<size_t, std::shared_ptr<ServersideHandler>> connections;
     std::unordered_map<size_t, std::weak_ptr<ServersideHandler>> client_by_id;
     std::shared_ptr<PermissionsBank> permissons_bank;
-
     size_t last_connection;
 };

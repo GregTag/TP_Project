@@ -3,7 +3,7 @@
 #include "client_connection.hpp"
 
 Server::Server(boost::asio::io_context& io, size_t port, const std::string& path)
-        : path_to_room_storage(path), acceptor(io, tcp::endpoint(tcp::v4(), port)) {
+        : path_to_room_storage(path), running(true), acceptor(io, tcp::endpoint(tcp::v4(), port)) {
     startListen();
 }
 
@@ -25,7 +25,7 @@ void Server::startListen() {
                     Logger::log() << "New socket" << std::endl;
                     socket->startCommunicate();
                 }
-                startListen();
+                if (running) startListen();
             });
 }
 
@@ -56,4 +56,12 @@ void Server::serverBroadcast(const std::string& text) {
     }
 }
 
-void Server::stopServer() {}
+void Server::stopServer() {
+    Logger::log() << "Stopping the server." << std::endl;
+    running = false;
+    acceptor.close();
+    for (auto con = connections.begin(); con != connections.end(); ++con) {
+        con->second->exit();
+    }
+    connections.clear();
+}

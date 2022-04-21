@@ -5,6 +5,8 @@ class AccountsDatabase {
    public:
     static std::shared_ptr<AccountsDatabase> getInstance();
 
+    virtual ~AccountsDatabase() = default;
+
     virtual std::shared_ptr<Account> createAccount(
             const std::string& name, const std::string& password_hash,
             std::shared_ptr<std::vector<size_t>> available_rooms = nullptr) = 0;

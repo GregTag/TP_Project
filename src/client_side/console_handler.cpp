@@ -5,8 +5,9 @@ ConsoleHandler::ConsoleHandler(std::shared_ptr<ClientsideHandler> client)
 
 void ConsoleHandler::start() {
     std::string command;
-    while (running && !std::cin.eof()) {
+    while (running) {
         std::cin >> command;
+        if (std::cin.eof()) break;
         if (command == "join") {
             joinExecuted();
         } else if (!command.empty()) {
