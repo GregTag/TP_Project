@@ -1,5 +1,6 @@
 #pragma once
 #include <deque>
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 
@@ -7,7 +8,7 @@
 
 class SimpleDatabase : public AccountsDatabase {
    public:
-    static void initialize(const std::string& path_to_db_file);
+    static void initialize(const std::filesystem::path& path_to_db_file);
 
     virtual ~SimpleDatabase();
 
@@ -20,7 +21,7 @@ class SimpleDatabase : public AccountsDatabase {
     std::shared_ptr<Account> findAccountByName(const std::string&) override;
 
    private:
-    SimpleDatabase(const std::string&);
+    SimpleDatabase(const std::filesystem::path&);
 
     std::shared_ptr<Account> parseAccount(const std::string&);
     void loadFromFile();

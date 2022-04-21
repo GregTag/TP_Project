@@ -1,6 +1,6 @@
 #include "simple_database.hpp"
 
-void SimpleDatabase::initialize(const std::string& path_to_db_file) {
+void SimpleDatabase::initialize(const std::filesystem::path& path_to_db_file) {
     if (!database) database = std::shared_ptr<SimpleDatabase>(new SimpleDatabase(path_to_db_file));
 }
 
@@ -9,9 +9,9 @@ SimpleDatabase::~SimpleDatabase() {
     db_file.close();
 }
 
-SimpleDatabase::SimpleDatabase(const std::string& path)
+SimpleDatabase::SimpleDatabase(const std::filesystem::path& path)
         : db_file(path, std::ios::in | std::ios::out) {
-    loadFromFile();
+    if (std::filesystem::exists(path)) loadFromFile();
 }
 
 std::shared_ptr<Account> SimpleDatabase::createAccount(

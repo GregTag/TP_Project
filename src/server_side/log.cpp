@@ -7,14 +7,14 @@ ServerLogger::~ServerLogger() {
     file.close();
 }
 
-ServerLogger::ServerLogger(const std::string& path)
+ServerLogger::ServerLogger(const std::filesystem::path& path)
         : file(path, std::ios::app | std::ios::out), device(std::cout, file), stream(device) {
     if (!file.is_open()) {
         throw std::exception();
     }
 }
 
-void ServerLogger::initialize(const std::string& path_to_log_file) {
+void ServerLogger::initialize(const std::filesystem::path& path_to_log_file) {
     if (!instance) instance = std::shared_ptr<ServerLogger>(new ServerLogger(path_to_log_file));
 }
 

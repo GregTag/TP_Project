@@ -2,7 +2,7 @@
 
 #include "client_connection.hpp"
 
-Server::Server(boost::asio::io_context& io, size_t port, const std::string& path)
+Server::Server(boost::asio::io_context& io, size_t port, const std::filesystem::path& path)
         : path_to_room_storage(path), running(true), acceptor(io, tcp::endpoint(tcp::v4(), port)) {
     startListen();
 }

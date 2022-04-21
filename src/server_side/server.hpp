@@ -10,7 +10,7 @@
 
 class Server : public std::enable_shared_from_this<Server> {
    public:
-    Server(boost::asio::io_context& io, size_t port, const std::string& path);
+    Server(boost::asio::io_context& io, size_t port, const std::filesystem::path& path);
     ~Server();
 
     std::shared_ptr<Room> getRoom(size_t room_id);
