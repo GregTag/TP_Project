@@ -1,4 +1,5 @@
 #pragma once
+#include "database/accounts_database.hpp"
 #include "request_handlers/server_handler.hpp"
 #include "requests/authorization/sign_in_request.hpp"
 #include "requests/authorization/sign_up_request.hpp"

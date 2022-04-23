@@ -23,9 +23,34 @@ void ClientConnection::destroy() {
     server.lock()->eraseConnection(id);
 }
 
-void ClientConnection::onSignUp(std::shared_ptr<SignUpRequest> request) {}
+void ClientConnection::onSignUp(std::shared_ptr<SignUpRequest> request) {
+    auto account = AccountsDatabase::getInstance()->createAccount(
+            request->getAccount()->getName(), request->getAccount()->getPasswordHash(),
+            AccountsDatabase::getInstance()->loadAccount(0)->getAvailableRooms());
+    if (!account) {
+        sendRequest(getCreator()->createErrorMessage(
+                "Authorization denied: account with same name is already exists."));
+    } else {
+        setAccount(account);
+        request->setAccount(account);
+        sendRequest(request);
+    }
+}
 
-void ClientConnection::onSignIn(std::shared_ptr<SignInRequest> request) {}
+void ClientConnection::onSignIn(std::shared_ptr<SignInRequest> request) {
+    auto account =
+            AccountsDatabase::getInstance()->findAccountByName(request->getAccount()->getName());
+    if (!account) {
+        sendRequest(
+                getCreator()->createErrorMessage("Authorization denied: account does not exists."));
+    } else if (account->getPasswordHash() != request->getAccount()->getPasswordHash()) {
+        sendRequest(getCreator()->createErrorMessage("Authorization denied: wrong password."));
+    } else {
+        setAccount(account);
+        request->setAccount(account);
+        sendRequest(request);
+    }
+}
 
 void ClientConnection::onMessage(std::shared_ptr<Message> request) {}
 

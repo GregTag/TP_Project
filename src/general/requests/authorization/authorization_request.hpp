@@ -9,6 +9,9 @@ class AuthorizationRequest : public Request {
     std::string getQuery() const override;
     void handle(std::shared_ptr<ClientsideHandler> handler) override;
 
-   protected:
+    std::shared_ptr<Account> getAccount();
+    void setAccount(std::shared_ptr<Account>);
+
+   private:
     std::shared_ptr<Account> account;
 };

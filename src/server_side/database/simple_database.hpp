@@ -12,9 +12,9 @@ class SimpleDatabase : public AccountsDatabase {
 
     virtual ~SimpleDatabase();
 
-    std::shared_ptr<Account> createAccount(
-            const std::string& name, const std::string& password_hash,
-            std::shared_ptr<std::vector<size_t>> available_rooms) override;
+    std::shared_ptr<Account> createAccount(const std::string& name,
+                                           const std::string& password_hash,
+                                           const std::vector<size_t>& available_rooms) override;
 
     void saveAccount(std::shared_ptr<Account>) override;
     std::shared_ptr<Account> loadAccount(size_t id) override;

@@ -12,7 +12,9 @@ class ConsoleHandler {
     void stop();
 
    private:
-    void joinExecuted();
+    void joinCommand();
+    void singUpCommand();
+    void signInCommand();
     // TODO: implement all remaining commands
 
     std::shared_ptr<ClientsideHandler> client;

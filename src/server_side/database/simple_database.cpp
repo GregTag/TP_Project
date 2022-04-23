@@ -1,5 +1,7 @@
 #include "simple_database.hpp"
 
+#include "log.hpp"
+
 void SimpleDatabase::initialize(const std::filesystem::path& path_to_db_file) {
     if (!database) database = std::shared_ptr<SimpleDatabase>(new SimpleDatabase(path_to_db_file));
 }
@@ -9,14 +11,20 @@ SimpleDatabase::~SimpleDatabase() {
     db_file.close();
 }
 
-SimpleDatabase::SimpleDatabase(const std::filesystem::path& path)
-        : db_file(path, std::ios::in | std::ios::out) {
-    if (std::filesystem::exists(path)) loadFromFile();
+SimpleDatabase::SimpleDatabase(const std::filesystem::path& path) {
+    bool exists = std::filesystem::exists(path);
+
+    if (!exists) db_file.open(path, std::ios::out);
+    db_file.open(path, std::ios::in | std::ios::out);
+    if (exists) loadFromFile();
+
+    if (db.empty()) db.push_back(std::make_shared<Account>());
+    Logger::log() << "DB initialized. " << db.size() << " entries loaded." << std::endl;
 }
 
-std::shared_ptr<Account> SimpleDatabase::createAccount(
-        const std::string& name, const std::string& password_hash,
-        std::shared_ptr<std::vector<size_t>> available_rooms = nullptr) {
+std::shared_ptr<Account> SimpleDatabase::createAccount(const std::string& name,
+                                                       const std::string& password_hash,
+                                                       const std::vector<size_t>& available_rooms) {
     if (findAccountByName(name)) return nullptr;
     db.push_back(std::make_shared<Account>(db.size(), name, password_hash, available_rooms));
     return db.back();
@@ -43,14 +51,14 @@ std::shared_ptr<Account> SimpleDatabase::parseAccount(const std::string& line) {
     size_t id;
     std::string name;
     std::string passw;
-    auto rooms = std::make_shared<std::vector<size_t>>();
+    std::vector<size_t> rooms;
     ss >> id >> name >> passw;
     while (!ss.eof()) {
         size_t r;
         ss >> r;
-        rooms->push_back(r);
+        rooms.push_back(r);
     }
-    return std::make_shared<Account>(id, name, passw, std::move(rooms));
+    return std::make_shared<Account>(id, name, passw, rooms);
 }
 
 void SimpleDatabase::loadFromFile() {
@@ -59,7 +67,6 @@ void SimpleDatabase::loadFromFile() {
         std::getline(db_file, line, '\n');
         if (!line.empty()) db.push_back(parseAccount(line));
     }
-    if (db.empty()) db.push_back(std::make_shared<Account>());
 }
 
 void SimpleDatabase::saveToFile() {
@@ -68,8 +75,8 @@ void SimpleDatabase::saveToFile() {
     for (auto& acc : db) {
         if (!acc) continue;
         db_file << acc->getId() << ' ' << acc->getName() << ' ' << acc->getPasswordHash();
-        if (acc->getAvailableRooms()) {
-            for (auto& n : *acc->getAvailableRooms()) {
+        if (!acc->getAvailableRooms().empty()) {
+            for (auto& n : acc->getAvailableRooms()) {
                 db_file << ' ' << n;
             }
         }

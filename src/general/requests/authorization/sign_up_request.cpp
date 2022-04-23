@@ -4,7 +4,7 @@ SignUpRequest::SignUpRequest(const std::string& name, const std::string& passwor
         : AuthorizationRequest(name, password_hash) {}
 
 std::string SignUpRequest::getQuery() const {
-    return std::to_string(size_t(RequestTypes::SignIn)) + Request::separator +
+    return std::to_string(size_t(RequestTypes::SignUp)) + Request::separator +
            AuthorizationRequest::getQuery();
 }
 void SignUpRequest::handle(std::shared_ptr<ServersideHandler> handler) {

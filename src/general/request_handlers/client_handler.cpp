@@ -10,9 +10,13 @@ void ClientsideHandler::receive(std::shared_ptr<Request> request) {
     request->handle(std::static_pointer_cast<ClientsideHandler>(shared_from_this()));
 }
 
-void ClientsideHandler::signIn(const std::string& name, const std::string& password) {}
+void ClientsideHandler::signIn(const std::string& name, const std::string& password) {
+    sendRequest(std::static_pointer_cast<Request>(std::make_shared<SignInRequest>(name, password)));
+}
 
-void ClientsideHandler::signUp(const std::string& name, const std::string& password) {}
+void ClientsideHandler::signUp(const std::string& name, const std::string& password) {
+    sendRequest(std::static_pointer_cast<Request>(std::make_shared<SignUpRequest>(name, password)));
+}
 
 void ClientsideHandler::join(size_t room) {
     sendRequest(getCreator()->createJoinMessage(room, getAccount()->getName()));

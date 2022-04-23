@@ -1,4 +1,6 @@
 #pragma once
+#include "requests/authorization/sign_in_request.hpp"
+#include "requests/authorization/sign_up_request.hpp"
 #include "requests/messages/messages_builder.hpp"
 
 class RequestCreator {

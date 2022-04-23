@@ -4,13 +4,16 @@ std::shared_ptr<Request> RequestParser::parse(std::string data) {
     data.pop_back();
     ss = std::stringstream(data);
     RequestTypes request_type = RequestTypes(readNumber());
+    std::string arg1;
     switch (request_type) {
         case RequestTypes::CompoundMessage:
             return parseMessage();
         case RequestTypes::SignIn:
-            return std::make_shared<SignInRequest>(readString(), readString());
+            arg1 = readString();
+            return std::make_shared<SignInRequest>(arg1, readString());
         case RequestTypes::SignUp:
-            return std::make_shared<SignUpRequest>(readString(), readString());
+            arg1 = readString();
+            return std::make_shared<SignUpRequest>(arg1, readString());
     }
     Logger::err() << "Invalid requqest type" << std::endl;
 }
