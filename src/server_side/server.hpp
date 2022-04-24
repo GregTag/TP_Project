@@ -16,7 +16,7 @@ class Server : public std::enable_shared_from_this<Server> {
     std::shared_ptr<Room> getRoom(size_t room_id);
     std::shared_ptr<Room> getOrCreateRoom(size_t room_id);
     std::shared_ptr<PermissionsBank> getPermissonsBank();
-    void registerClient(std::shared_ptr<ServersideHandler> handler);
+    bool registerClient(size_t id, std::shared_ptr<ServersideHandler> handler);
     void eraseConnection(size_t);
     void serverBroadcast(const std::string& text);
     void stopServer();

@@ -49,12 +49,20 @@ std::shared_ptr<Room> Server::getOrCreateRoom(size_t room_id) {
             .first->second;
 }
 
-void Server::registerClient(std::shared_ptr<ServersideHandler> handler) {
-    client_by_id.emplace(handler->getAccount()->getId(), handler);
+bool Server::registerClient(size_t id, std::shared_ptr<ServersideHandler> handler) {
+    return client_by_id.emplace(id, handler).second;
 }
 
 void Server::eraseConnection(size_t id) {
-    connections.erase(id);
+    auto found = connections.find(id);
+    if (found == connections.end()) {
+        Logger::err() << "Erasing a nonexistent connection." << std::endl;
+        return;
+    }
+
+    size_t account_id = found->second->getAccount()->getId();
+    if (account_id) client_by_id.erase(account_id);
+    connections.erase(found);
 }
 
 void Server::serverBroadcast(const std::string& text) {
@@ -64,6 +72,7 @@ void Server::serverBroadcast(const std::string& text) {
 }
 
 void Server::stopServer() {
+    if (!running) return;
     Logger::log() << "Stopping the server." << std::endl;
     running = false;
     acceptor.close();

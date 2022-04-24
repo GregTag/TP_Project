@@ -10,9 +10,13 @@ void ClientConnection::destroy() {
         return;
     }
 
+    const std::string& name = getAccount()->getName();
+
     for (auto& [id, room] : rooms) {
         if (room.expired()) continue;
-        room.lock()->leave(sharedFromThis());
+        auto ptr = room.lock();
+        ptr->leave(sharedFromThis());
+        ptr->broadcast(getCreator()->createLeaveMessage(id, name));
     }
 
     server.lock()->eraseConnection(id);
@@ -38,6 +42,8 @@ void ClientConnection::onSignIn(std::shared_ptr<SignInRequest> request) {
         sendError("Authorization denied: account does not exists.");
     } else if (account->getPasswordHash() != request->getAccount()->getPasswordHash()) {
         sendError("Authorization denied: wrong password.");
+    } else if (!server.lock()->registerClient(account->getId(), sharedFromThis())) {
+        sendError("This user has already logged.");
     } else {
         setAccount(account);
         request->setAccount(account);
@@ -79,6 +85,7 @@ void ClientConnection::joinEvent(std::shared_ptr<Message> request) {
         sendError("Already joined to room.");
         return;
     }
+
     auto room = server.lock()->getOrCreateRoom(request->getRoom());
     room->join(sharedFromThis());
     rooms.emplace(request->getRoom(), room);

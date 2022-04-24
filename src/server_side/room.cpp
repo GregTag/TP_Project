@@ -15,8 +15,8 @@ void Room::leave(std::shared_ptr<ServersideHandler> client) {
 }
 
 void Room::broadcast(std::shared_ptr<Message> message) {
-    for (auto& client : clients) {
-        client.second.lock()->sendRequest(message);
+    for (auto& [id, client] : clients) {
+        client.lock()->sendRequest(message);
     }
     writeToHistory(message);
 }
@@ -31,14 +31,15 @@ std::shared_ptr<ServersideHandler> Room::getClient(size_t id) {
     return found->second.lock();
 }
 
-std::string Room::getClientsList() {
-    return "ClientList";
-}
+// std::string Room::getClientsList() {
+//     return "ClientList";
+// }
 
-std::string Room::readHistory(size_t lines) {
-    return "";
-}
+// std::string Room::readHistory(size_t lines) {
+//     return "";
+// }
 
 void Room::writeToHistory(std::shared_ptr<Message> message) {
+    history.clear();
     history << message->getQuery() << std::endl;
 }
