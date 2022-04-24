@@ -16,6 +16,10 @@ void ConsoleHandler::start() {
             joinCommand();
         } else if (command == "leave") {
             leaveCommand();
+        } else if (command == "send" || command == "s") {
+            sendCommand();
+        } else if (command == "whisper" || command == "w" || command == "tell") {
+            privateSendCommand();
         } else if (!command.empty()) {
             std::cout << "Unknown command." << std::endl;
         }
@@ -55,4 +59,21 @@ void ConsoleHandler::signInCommand() {
     std::string name, passw;
     std::cin >> name >> passw;
     client->signIn(name, passw);
+}
+
+void ConsoleHandler::sendCommand() {
+    size_t room;
+    std::string text;
+    std::cin >> room;
+    std::getline(std::cin, text, '\n');
+    client->send(room, text);
+}
+
+void ConsoleHandler::privateSendCommand() {
+    size_t room;
+    std::string user;
+    std::string text;
+    std::cin >> room >> user;
+    std::getline(std::cin, text, '\n');
+    client->sendPrivate(room, user, text);
 }

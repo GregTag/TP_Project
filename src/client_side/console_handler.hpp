@@ -16,7 +16,8 @@ class ConsoleHandler {
     void leaveCommand();
     void singUpCommand();
     void signInCommand();
-    // TODO: implement all remaining commands
+    void sendCommand();
+    void privateSendCommand();
 
     std::shared_ptr<ClientsideHandler> client;
     bool running;

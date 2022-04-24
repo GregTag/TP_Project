@@ -51,7 +51,7 @@ std::shared_ptr<Message> RequestParser::parseMessage() {
                 message_facade.addText(readString());
                 break;
             case MessageProperties::Private:
-                message_facade.makePrivate(readNumber());
+                message_facade.makePrivate(readString());
                 break;
         }
     }

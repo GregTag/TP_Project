@@ -25,7 +25,7 @@ void ConsoleRenderer::baseMessageRender(std::shared_ptr<Message> msg) {
     if (type == MessageTypes::Join || type == MessageTypes::Leave) {
         std::cout << (type == MessageTypes::Join ? "joined." : "leaved.");
     } else if (!text.empty()) {
-        if (type == MessageTypes::Chat) std::cout << (is_private ? "[P]: " : ": ");
+        if (type == MessageTypes::Chat) std::cout << (is_private ? "[P]:" : ":");
         std::cout << text;
     }
     std::cout << std::endl;

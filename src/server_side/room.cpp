@@ -3,7 +3,6 @@
 Room::Room(size_t room_id, const std::filesystem::path& file)
         : room_id(room_id), history(file, std::ios_base::out) {
     history.open(file, std::ios_base::in | std::ios_base::out | std::ios_base::app);
-    Logger::log() << "in room ctor" << std::endl;
 }
 
 void Room::join(std::shared_ptr<ServersideHandler> client) {

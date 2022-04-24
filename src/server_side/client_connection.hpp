@@ -20,6 +20,7 @@ class ClientConnection : public ServersideHandler {
     std::shared_ptr<Room> getRoom(size_t room_id);
     void joinEvent(std::shared_ptr<Message>);
     void leaveEvent(std::shared_ptr<Message>);
+    void chatEvent(std::shared_ptr<Message>);
 
     const size_t id;
     std::weak_ptr<Server> server;

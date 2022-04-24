@@ -60,11 +60,30 @@ void ClientConnection::onMessage(std::shared_ptr<Message> request) {
             leaveEvent(request);
             break;
         default:
+            chatEvent(request);
             break;
     }
 }
 
-void ClientConnection::onPrivateMessage(std::shared_ptr<PrivateDecorator> request) {}
+void ClientConnection::onPrivateMessage(std::shared_ptr<PrivateDecorator> request) {
+    auto addressee = AccountsDatabase::getInstance()->findAccountByName(request->getAddressee());
+    if (!addressee) {
+        sendError("This user does not exist.");
+        return;
+    }
+    auto room = getRoom(request->getRoom());
+    if (!room) {
+        sendError("Wrong room.");
+        return;
+    }
+    auto client = room->getClient(addressee->getId());
+    if (!client) {
+        sendError("There is no such user in this room.");
+        return;
+    }
+    client->sendRequest(request);
+    sendRequest(request);
+}
 
 void ClientConnection::sendError(const std::string& text) {
     sendRequest(getCreator()->createErrorMessage(text));
@@ -104,19 +123,11 @@ void ClientConnection::leaveEvent(std::shared_ptr<Message> request) {
     rooms.erase(request->getRoom());
 }
 
-// std::unordered_map<size_t, std::weak_ptr<Room>>& ServersideHandler::getRooms() {
-//     return rooms;
-// }
-
-// void ServersideHandler::onMessage(std::shared_ptr<Message> msg) {
-//     if (msg->getType() == MessageTypes::Join) {
-//         Logger::log() << "New member in room " << msg->getRoom() << std::endl;
-//         // But we have no rooms yet
-//     } else {
-//         getRoom(msg->getRoom())->broadcast(msg);
-//     }
-// }
-
-// void ServersideHandler::onPrivateMessage(std::shared_ptr<PrivateDecorator> msg) {
-//     getRoom(msg->getRoom())->getClient(msg->getAddressee())->sendRequest(msg);
-// }
+void ClientConnection::chatEvent(std::shared_ptr<Message> request) {
+    auto room = getRoom(request->getRoom());
+    if (!room) {
+        sendError("Wrong room.");
+        return;
+    }
+    room->broadcast(request);
+}

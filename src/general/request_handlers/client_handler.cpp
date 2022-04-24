@@ -39,7 +39,7 @@ void ClientsideHandler::send(size_t room, const std::string& text) {
     sendRequest(getCreator()->createChatMessage(room, getAccount()->getName(), text));
 }
 
-void ClientsideHandler::sendPrivate(size_t room, size_t user, const std::string& text) {
+void ClientsideHandler::sendPrivate(size_t room, const std::string& user, const std::string& text) {
     sendRequest(std::make_shared<PrivateDecorator>(
             getCreator()->createChatMessage(room, getAccount()->getName(), text), user));
 }

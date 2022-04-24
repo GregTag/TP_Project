@@ -18,7 +18,7 @@ class ClientsideHandler : public AbstractHandler {
     std::shared_ptr<MessageRenderer> getRenderer();
 
     void send(size_t room, const std::string& text);
-    void sendPrivate(size_t room, size_t user, const std::string& text);
+    void sendPrivate(size_t room, const std::string& user, const std::string& text);
 
    protected:
     std::shared_ptr<MessageRenderer> renderer;
