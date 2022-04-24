@@ -8,12 +8,14 @@ void ConsoleHandler::start() {
     while (running) {
         std::cin >> command;
         if (std::cin.eof()) break;
-        if (command == "join") {
-            joinCommand();
-        } else if (command == "register" || command == "signup") {
+        if (command == "register" || command == "signup") {
             singUpCommand();
         } else if (command == "login" || command == "signin") {
             signInCommand();
+        } else if (command == "join") {
+            joinCommand();
+        } else if (command == "leave") {
+            leaveCommand();
         } else if (!command.empty()) {
             std::cout << "Unknown command." << std::endl;
         }
@@ -35,6 +37,12 @@ void ConsoleHandler::joinCommand() {
     size_t room;
     std::cin >> room;
     client->join(room);
+}
+
+void ConsoleHandler::leaveCommand() {
+    size_t room;
+    std::cin >> room;
+    client->leave(room);
 }
 
 void ConsoleHandler::singUpCommand() {

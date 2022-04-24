@@ -3,7 +3,7 @@
 #include "client_connection.hpp"
 
 Server::Server(boost::asio::io_context& io, size_t port, const std::filesystem::path& path)
-        : path_to_room_storage(path), running(true), acceptor(io, tcp::endpoint(tcp::v4(), port)) {
+        : path_to_rooms(path), running(true), acceptor(io, tcp::endpoint(tcp::v4(), port)) {
     startListen();
 }
 
@@ -30,16 +30,23 @@ void Server::startListen() {
 }
 
 std::shared_ptr<Room> Server::getRoom(size_t room_id) {
-    return rooms.at(room_id);
+    auto found = rooms.find(room_id);
+    if (found == rooms.end()) return nullptr;
+    return found->second;
 }
 
 std::shared_ptr<PermissionsBank> Server::getPermissonsBank() {
+    // TODO
     return nullptr;
 }
 
-std::shared_ptr<Room> Server::createRoom(size_t room_id) {
-    return rooms[room_id] =
-                   std::make_shared<Room>(room_id, path_to_room_storage / std::to_string(room_id));
+std::shared_ptr<Room> Server::getOrCreateRoom(size_t room_id) {
+    auto room = getRoom(room_id);
+    if (room) return room;
+    return rooms
+            .emplace(room_id,
+                     std::make_shared<Room>(room_id, path_to_rooms / std::to_string(room_id)))
+            .first->second;
 }
 
 void Server::registerClient(std::shared_ptr<ServersideHandler> handler) {

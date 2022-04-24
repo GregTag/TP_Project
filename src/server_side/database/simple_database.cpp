@@ -24,7 +24,7 @@ SimpleDatabase::SimpleDatabase(const std::filesystem::path& path) {
 
 std::shared_ptr<Account> SimpleDatabase::createAccount(const std::string& name,
                                                        const std::string& password_hash,
-                                                       const std::vector<size_t>& available_rooms) {
+                                                       const std::set<size_t>& available_rooms) {
     if (findAccountByName(name)) return nullptr;
     db.push_back(std::make_shared<Account>(db.size(), name, password_hash, available_rooms));
     return db.back();
@@ -51,12 +51,12 @@ std::shared_ptr<Account> SimpleDatabase::parseAccount(const std::string& line) {
     size_t id;
     std::string name;
     std::string passw;
-    std::vector<size_t> rooms;
+    std::set<size_t> rooms;
     ss >> id >> name >> passw;
     while (!ss.eof()) {
         size_t r;
         ss >> r;
-        rooms.push_back(r);
+        rooms.insert(r);
     }
     return std::make_shared<Account>(id, name, passw, rooms);
 }

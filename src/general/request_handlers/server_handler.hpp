@@ -18,4 +18,7 @@ class ServersideHandler : public AbstractHandler {
     virtual void onSignIn(std::shared_ptr<SignInRequest>) = 0;
     virtual void onMessage(std::shared_ptr<Message>) = 0;
     virtual void onPrivateMessage(std::shared_ptr<PrivateDecorator>) = 0;
+
+   protected:
+    std::shared_ptr<ServersideHandler> sharedFromThis();
 };

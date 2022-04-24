@@ -1,19 +1,13 @@
 #pragma once
 #include "database/accounts_database.hpp"
 #include "request_handlers/server_handler.hpp"
-#include "requests/authorization/sign_in_request.hpp"
-#include "requests/authorization/sign_up_request.hpp"
-#include "requests/messages/message.hpp"
-#include "requests/messages/private_decorator.hpp"
 #include "room.hpp"
 #include "server.hpp"
 
 class ClientConnection : public ServersideHandler {
    public:
     ClientConnection(size_t, std::shared_ptr<Socket>, std::weak_ptr<Server>);
-    virtual ~ClientConnection();
-
-    std::shared_ptr<Room> getRoom(size_t room_id);
+    virtual ~ClientConnection() = default;
 
     void destroy() override;
     void onSignUp(std::shared_ptr<SignUpRequest>) override;
@@ -22,6 +16,11 @@ class ClientConnection : public ServersideHandler {
     void onPrivateMessage(std::shared_ptr<PrivateDecorator>) override;
 
    private:
+    void sendError(const std::string&);
+    std::shared_ptr<Room> getRoom(size_t room_id);
+    void joinEvent(std::shared_ptr<Message>);
+    void leaveEvent(std::shared_ptr<Message>);
+
     const size_t id;
     std::weak_ptr<Server> server;
     std::unordered_map<size_t, std::weak_ptr<Room>> rooms;

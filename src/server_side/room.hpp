@@ -1,19 +1,19 @@
 #pragma once
 
+#include <filesystem>
 #include <fstream>
 #include <unordered_map>
 
 #include "request_handlers/server_handler.hpp"
-#include "requests/messages/message.hpp"
+#include "requests/request_creator.hpp"
 
 class Room {
    public:
-    Room(size_t room_id, const std::string& file);
-
+    Room(size_t room_id, const std::filesystem::path& file);
     ~Room() = default;
 
-    void join(std::shared_ptr<ServersideHandler>);
-    void leave(std::shared_ptr<ServersideHandler>);
+    void join(std::shared_ptr<ServersideHandler> client);
+    void leave(std::shared_ptr<ServersideHandler> client);
     void broadcast(std::shared_ptr<Message>);
     size_t getId();
     std::shared_ptr<ServersideHandler> getClient(size_t id);

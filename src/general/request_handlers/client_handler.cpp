@@ -22,6 +22,10 @@ void ClientsideHandler::join(size_t room) {
     sendRequest(getCreator()->createJoinMessage(room, getAccount()->getName()));
 }
 
+void ClientsideHandler::leave(size_t room) {
+    sendRequest(getCreator()->createLeaveMessage(room, getAccount()->getName()));
+}
+
 std::shared_ptr<std::vector<std::pair<size_t, std::string>>> ClientsideHandler::getUsers(
         size_t room) {
     return nullptr;

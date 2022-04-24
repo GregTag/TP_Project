@@ -14,7 +14,7 @@ class Server : public std::enable_shared_from_this<Server> {
     ~Server();
 
     std::shared_ptr<Room> getRoom(size_t room_id);
-    std::shared_ptr<Room> createRoom(size_t room_id);
+    std::shared_ptr<Room> getOrCreateRoom(size_t room_id);
     std::shared_ptr<PermissionsBank> getPermissonsBank();
     void registerClient(std::shared_ptr<ServersideHandler> handler);
     void eraseConnection(size_t);
@@ -24,7 +24,7 @@ class Server : public std::enable_shared_from_this<Server> {
    private:
     void startListen();
 
-    const std::filesystem::path path_to_room_storage;
+    const std::filesystem::path path_to_rooms;
     bool running;
     tcp::acceptor acceptor;
     std::unordered_map<size_t, std::shared_ptr<Room>> rooms;

@@ -13,6 +13,7 @@ class ConsoleHandler {
 
    private:
     void joinCommand();
+    void leaveCommand();
     void singUpCommand();
     void signInCommand();
     // TODO: implement all remaining commands
