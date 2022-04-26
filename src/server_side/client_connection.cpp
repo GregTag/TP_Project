@@ -66,6 +66,12 @@ void ClientConnection::onMessage(std::shared_ptr<Message> request) {
 }
 
 void ClientConnection::onPrivateMessage(std::shared_ptr<PrivateDecorator> request) {
+    if (!PermissionsBank::getInstance()->check(request->getRoom(), getAccount()->getId(),
+                                               PermissionsSet::CanSendPrivateMessages)) {
+        sendError("Permissions denied");
+        return;
+    }
+
     auto addressee = AccountsDatabase::getInstance()->findAccountByName(request->getAddressee());
     if (!addressee) {
         sendError("This user does not exist.");
@@ -125,9 +131,15 @@ void ClientConnection::leaveEvent(std::shared_ptr<Message> request) {
 
 void ClientConnection::chatEvent(std::shared_ptr<Message> request) {
     auto room = getRoom(request->getRoom());
+    if (!PermissionsBank::getInstance()->check(request->getRoom(), getAccount()->getId(),
+                                               PermissionsSet::CanSendMessages)) {
+        sendError("Permissions denied.");
+        return;
+    }
     if (!room) {
         sendError("Wrong room.");
         return;
     }
+
     room->broadcast(request);
 }

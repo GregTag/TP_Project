@@ -1,5 +1,6 @@
 #pragma once
 #include "database/accounts_database.hpp"
+#include "permissions.hpp"
 #include "request_handlers/server_handler.hpp"
 #include "room.hpp"
 #include "server.hpp"

@@ -35,11 +35,6 @@ std::shared_ptr<Room> Server::getRoom(size_t room_id) {
     return found->second;
 }
 
-std::shared_ptr<PermissionsBank> Server::getPermissonsBank() {
-    // TODO
-    return nullptr;
-}
-
 std::shared_ptr<Room> Server::getOrCreateRoom(size_t room_id) {
     auto room = getRoom(room_id);
     if (room) return room;

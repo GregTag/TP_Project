@@ -1,5 +1,6 @@
 #include "log.hpp"
 #include "server.hpp"
+#include "server_permissions.hpp"
 
 int main(int argc, char* argv[]) {
     if (argc != 3) {
@@ -10,6 +11,7 @@ int main(int argc, char* argv[]) {
     std::filesystem::path path_arg(argv[2]);
     ServerLogger::initialize(path_arg / "log_server.txt");
     SimpleDatabase::initialize(path_arg / "db.txt");
+    ServerPermissionsBank::initialize(path_arg / "permissions.txt");
 
     boost::asio::io_context io;
     auto server = std::make_shared<Server>(io, std::stoul(argv[1]), path_arg);

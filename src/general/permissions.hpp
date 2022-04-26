@@ -1,27 +1,36 @@
 #pragma once
 
+#include <memory>
 #include <unordered_map>
 
-enum class Permissions {
-    CanReadHistory = 1,
-    CanGetUsernamesList = 2,
-    CanSendMessages = 4,
-    CanSendPrivateMessages = 8
+class PermissionsSet {
+   public:
+    using Permission = size_t;
+
+    static const Permission CanReadHistory = 1;
+    static const Permission CanGetUsernamesList = 2;
+    static const Permission CanSendMessages = 4;
+    static const Permission CanSendPrivateMessages = 8;
+
+    static const Permission AllPermissions = 15;
 };
 
 class PermissionsBank {
    public:
-    using PermissionsSet = size_t;
+    using Permission = typename PermissionsSet::Permission;
 
-    PermissionsBank() = default;
-    ~PermissionsBank() = default;
+    static std::shared_ptr<PermissionsBank> getInstance();
 
-    PermissionsSet get(size_t room, size_t client);
-    void setDefault(size_t room, PermissionsSet permission_set);
-    void set(size_t room, size_t client, PermissionsSet permission_set);
-    bool check(size_t room, size_t client, Permissions permission);
+    virtual ~PermissionsBank() = default;
 
-   private:
-    std::unordered_map<size_t, std::unordered_map<size_t, PermissionsSet>> permissions_set;
-    std::unordered_map<size_t, PermissionsSet> default_permissons_set;
+    Permission get(size_t room, size_t client);
+    void setDefault(size_t room, Permission permission_set);
+    void set(size_t room, size_t client, Permission permission_set);
+    bool check(size_t room, size_t client, Permission permission);
+
+   protected:
+    static std::shared_ptr<PermissionsBank> bank;
+
+    std::unordered_map<size_t, std::unordered_map<size_t, Permission>> permissions_set;
+    std::unordered_map<size_t, Permission> default_permissons_set;
 };
