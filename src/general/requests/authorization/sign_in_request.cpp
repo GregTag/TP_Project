@@ -1,7 +1,6 @@
 #include "sign_in_request.hpp"
 
-SignInRequest::SignInRequest(const std::string& name, const std::string& password_hash)
-        : AuthorizationRequest(name, password_hash) {}
+SignInRequest::SignInRequest(std::shared_ptr<Account> account) : AuthorizationRequest(account) {}
 
 std::string SignInRequest::getQuery() const {
     return std::to_string(size_t(RequestTypes::SignIn)) + Request::separator +

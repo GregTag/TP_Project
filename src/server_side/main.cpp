@@ -1,3 +1,4 @@
+#include "console_handler.hpp"
 #include "log.hpp"
 #include "server.hpp"
 #include "server_permissions.hpp"
@@ -18,12 +19,10 @@ int main(int argc, char* argv[]) {
 
     Logger::log() << "Server initialized" << std::endl;
 
-    std::thread t([server]() {
-        while (!std::cin.eof()) {
-            std::cin.ignore(255, '\n');
-        }
-        server->stopServer();
-    });
+    auto command_handler = std::make_shared<ConsoleHandler>(server);
+
+    std::thread t([command_handler]() { command_handler->start(); });
+
     io.run();
     t.join();
 }

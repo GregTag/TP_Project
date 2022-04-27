@@ -18,6 +18,7 @@ class Server : public std::enable_shared_from_this<Server> {
     void eraseConnection(size_t);
     void serverBroadcast(const std::string& text);
     void stopServer();
+    bool isRunning();
 
    private:
     void startListen();

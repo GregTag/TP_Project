@@ -76,3 +76,7 @@ void Server::stopServer() {
     }
     connections.clear();
 }
+
+bool Server::isRunning() {
+    return running;
+}

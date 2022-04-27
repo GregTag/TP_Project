@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <set>
+#include <sstream>
 #include <string>
 
 class Account {
@@ -17,6 +18,7 @@ class Account {
     const std::string& getName() const;
     const std::string& getPasswordHash() const;
     const std::set<size_t>& getAvailableRooms() const;
+    std::string getRoomList() const;
 
    private:
     size_t id;

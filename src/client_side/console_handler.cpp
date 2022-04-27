@@ -12,6 +12,8 @@ void ConsoleHandler::start() {
             singUpCommand();
         } else if (command == "login" || command == "signin") {
             signInCommand();
+        } else if (command == "rooms") {
+            roomsCommand();
         } else if (command == "join") {
             joinCommand();
         } else if (command == "leave") {
@@ -20,6 +22,8 @@ void ConsoleHandler::start() {
             sendCommand();
         } else if (command == "whisper" || command == "w" || command == "tell") {
             privateSendCommand();
+        } else if (command == "exit" || command == "quit") {
+            break;
         } else if (!command.empty()) {
             std::cout << "Unknown command." << std::endl;
         }
@@ -35,6 +39,10 @@ void ConsoleHandler::stop() {
         std::cout << "Server closed connection.\nYou can close a program." << std::endl;
     }
     running = false;
+}
+
+void ConsoleHandler::roomsCommand() {
+    std::cout << "Available rooms: " << client->getAccount()->getRoomList() << std::endl;
 }
 
 void ConsoleHandler::joinCommand() {

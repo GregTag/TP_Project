@@ -8,7 +8,7 @@ class PermissionsSet {
     using Permission = size_t;
 
     static const Permission CanReadHistory = 1;
-    static const Permission CanGetUsernamesList = 2;
+    static const Permission CanGetUsersList = 2;
     static const Permission CanSendMessages = 4;
     static const Permission CanSendPrivateMessages = 8;
 

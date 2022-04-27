@@ -3,7 +3,7 @@
 
 class SignUpRequest : public AuthorizationRequest {
    public:
-    explicit SignUpRequest(const std::string& name, const std::string& password_hash);
+    explicit SignUpRequest(std::shared_ptr<Account> account);
     virtual ~SignUpRequest() = default;
 
     std::string getQuery() const override;

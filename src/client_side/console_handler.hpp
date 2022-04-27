@@ -12,6 +12,7 @@ class ConsoleHandler {
     void stop();
 
    private:
+    void roomsCommand();
     void joinCommand();
     void leaveCommand();
     void singUpCommand();

@@ -1,7 +1,6 @@
 #include "sign_up_request.hpp"
 
-SignUpRequest::SignUpRequest(const std::string& name, const std::string& password_hash)
-        : AuthorizationRequest(name, password_hash) {}
+SignUpRequest::SignUpRequest(std::shared_ptr<Account> account) : AuthorizationRequest(account) {}
 
 std::string SignUpRequest::getQuery() const {
     return std::to_string(size_t(RequestTypes::SignUp)) + Request::separator +

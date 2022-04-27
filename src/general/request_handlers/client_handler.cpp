@@ -11,11 +11,13 @@ void ClientsideHandler::receive(std::shared_ptr<Request> request) {
 }
 
 void ClientsideHandler::signIn(const std::string& name, const std::string& password) {
-    sendRequest(std::static_pointer_cast<Request>(std::make_shared<SignInRequest>(name, password)));
+    sendRequest(std::static_pointer_cast<Request>(
+            std::make_shared<SignInRequest>(std::make_shared<Account>(0, name, password))));
 }
 
 void ClientsideHandler::signUp(const std::string& name, const std::string& password) {
-    sendRequest(std::static_pointer_cast<Request>(std::make_shared<SignUpRequest>(name, password)));
+    sendRequest(std::static_pointer_cast<Request>(
+            std::make_shared<SignUpRequest>(std::make_shared<Account>(0, name, password))));
 }
 
 void ClientsideHandler::join(size_t room) {

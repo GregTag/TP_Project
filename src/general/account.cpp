@@ -23,3 +23,15 @@ const std::string& Account::getPasswordHash() const {
 const std::set<size_t>& Account::getAvailableRooms() const {
     return available_rooms;
 }
+
+std::string Account::getRoomList() const {
+    std::stringstream ss;
+    for (const size_t& room : available_rooms) {
+        ss << room << ' ';
+    }
+
+    std::string res;
+    std::getline(ss, res);
+    if (!res.empty()) res.pop_back();
+    return res;
+}

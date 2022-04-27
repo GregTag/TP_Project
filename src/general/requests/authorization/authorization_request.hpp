@@ -3,7 +3,7 @@
 
 class AuthorizationRequest : public Request {
    public:
-    AuthorizationRequest(const std::string& name, const std::string& password_hash);
+    AuthorizationRequest(std::shared_ptr<Account> account);
     virtual ~AuthorizationRequest() = default;
 
     std::string getQuery() const override;
