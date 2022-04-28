@@ -48,6 +48,22 @@ bool Server::registerClient(size_t id, std::shared_ptr<ServersideHandler> handle
     return client_by_id.emplace(id, handler).second;
 }
 
+void Server::relogin(size_t id) {
+    Logger::log() << "In relogin with id " << id << std::endl;
+    auto found = client_by_id.find(id);
+    if (found == client_by_id.end()) {
+        Logger::err() << "Client not found." << std::endl;
+        return;
+    }
+    if (found->second.expired()) {
+        Logger::err() << "Client expired." << std::endl;
+        return;
+    }
+    auto handler = found->second.lock();
+    handler->sendRequest(std::static_pointer_cast<Request>(
+            std::make_shared<SignInRequest>(handler->getAccount())));
+}
+
 void Server::eraseConnection(size_t id) {
     auto found = connections.find(id);
     if (found == connections.end()) {

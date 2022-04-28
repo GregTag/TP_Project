@@ -7,8 +7,9 @@ void ConsoleHandler::start() {
     std::string command;
     while (running) {
         std::cin >> command;
-        if (std::cin.eof()) break;
-        if (command == "register" || command == "signup") {
+        if (std::cin.eof() || command == "exit" || command == "quit") {
+            break;
+        } else if (command == "register" || command == "signup") {
             singUpCommand();
         } else if (command == "login" || command == "signin") {
             signInCommand();
@@ -22,15 +23,13 @@ void ConsoleHandler::start() {
             sendCommand();
         } else if (command == "whisper" || command == "w" || command == "tell") {
             privateSendCommand();
-        } else if (command == "exit" || command == "quit") {
-            break;
         } else if (!command.empty()) {
             std::cout << "Unknown command." << std::endl;
         }
     }
     if (running) {
-        client->exit();
         running = false;
+        client->exit();
     }
 }
 
@@ -42,7 +41,13 @@ void ConsoleHandler::stop() {
 }
 
 void ConsoleHandler::roomsCommand() {
-    std::cout << "Available rooms: " << client->getAccount()->getRoomList() << std::endl;
+    std::string ans = client->getAccount()->getRoomList();
+    Logger::log() << ans << std::endl;
+    if (ans.empty()) {
+        std::cout << "There is no available rooms." << std::endl;
+    } else {
+        std::cout << "Available rooms: " << ans << std::endl;
+    }
 }
 
 void ConsoleHandler::joinCommand() {

@@ -20,7 +20,7 @@ const std::string& Account::getPasswordHash() const {
     return password_hash;
 }
 
-const std::set<size_t>& Account::getAvailableRooms() const {
+std::set<size_t>& Account::getAvailableRooms() {
     return available_rooms;
 }
 

@@ -28,6 +28,7 @@ std::string RequestParser::readString() {
 
 std::set<size_t> RequestParser::parseSet() {
     std::string line = readString();
+    if (line.empty()) return std::set<size_t>();
     std::stringstream stream(line);
     std::set<size_t> res;
     size_t room;

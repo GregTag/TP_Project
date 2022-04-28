@@ -17,7 +17,7 @@ class Account {
     size_t getId() const;
     const std::string& getName() const;
     const std::string& getPasswordHash() const;
-    const std::set<size_t>& getAvailableRooms() const;
+    std::set<size_t>& getAvailableRooms();
     std::string getRoomList() const;
 
    private:
