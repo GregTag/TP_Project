@@ -13,6 +13,8 @@ class ClientsideHandler : public AbstractHandler {
     void signUp(const std::string& name, const std::string& password);
     void join(size_t room);
     void leave(size_t room);
+    void requestUserList(size_t room);
+    void requestHistory(size_t room);
 
     std::shared_ptr<std::vector<std::pair<size_t, std::string>>> getUsers(size_t room);
     std::shared_ptr<MessageRenderer> getRenderer();

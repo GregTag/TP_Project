@@ -59,6 +59,12 @@ void ClientConnection::onMessage(std::shared_ptr<Message> request) {
         case MessageTypes::Leave:
             leaveEvent(request);
             break;
+        case MessageTypes::UserList:
+            userListEvent(request);
+            break;
+        case MessageTypes::History:
+            historyEvent(request);
+            break;
         default:
             chatEvent(request);
             break;
@@ -127,6 +133,36 @@ void ClientConnection::leaveEvent(std::shared_ptr<Message> request) {
     room->broadcast(request);
     room->leave(sharedFromThis());
     rooms.erase(request->getRoom());
+}
+
+void ClientConnection::userListEvent(std::shared_ptr<Message> request) {
+    if (!PermissionsBank::getInstance()->check(request->getRoom(), getAccount()->getId(),
+                                               PermissionsSet::CanGetUsersList)) {
+        sendError("Permissions denied");
+        return;
+    }
+
+    auto room = getRoom(request->getRoom());
+    if (!room) {
+        sendError("Wrong room.");
+        return;
+    }
+    sendRequest(std::make_shared<TextDecorator>(request, room->getUsersList()));
+}
+
+void ClientConnection::historyEvent(std::shared_ptr<Message> request) {
+    if (!PermissionsBank::getInstance()->check(request->getRoom(), getAccount()->getId(),
+                                               PermissionsSet::CanReadHistory)) {
+        sendError("Permissions denied");
+        return;
+    }
+
+    auto room = getRoom(request->getRoom());
+    if (!room) {
+        sendError("Wrong room.");
+        return;
+    }
+    room->sendHistory(sharedFromThis());
 }
 
 void ClientConnection::chatEvent(std::shared_ptr<Message> request) {

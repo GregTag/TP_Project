@@ -3,7 +3,7 @@
 
 enum class MessageProperties { Type, Time, Room, Sender, Text, Private };
 
-enum class MessageTypes { Chat, Info, Error, Join, Leave };
+enum class MessageTypes { Chat, Info, Error, Join, Leave, UserList, History };
 
 class Message : public Request {
    public:

@@ -18,6 +18,7 @@ class AbstractHandler : public std::enable_shared_from_this<AbstractHandler> {
     std::shared_ptr<Account> getAccount();
     void setAccount(std::shared_ptr<Account>);
 
+    void sendRaw(const std::string& data);
     void sendRequest(std::shared_ptr<Request>);
     void startReceiving();
     void exit();

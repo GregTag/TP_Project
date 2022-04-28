@@ -19,6 +19,10 @@ void ConsoleHandler::start() {
             joinCommand();
         } else if (command == "leave") {
             leaveCommand();
+        } else if (command == "users") {
+            usersCommand();
+        } else if (command == "history") {
+            historyCommand();
         } else if (command == "send" || command == "s") {
             sendCommand();
         } else if (command == "whisper" || command == "w" || command == "tell") {
@@ -60,6 +64,18 @@ void ConsoleHandler::leaveCommand() {
     size_t room;
     std::cin >> room;
     client->leave(room);
+}
+
+void ConsoleHandler::usersCommand() {
+    size_t room;
+    std::cin >> room;
+    client->requestUserList(room);
+}
+
+void ConsoleHandler::historyCommand() {
+    size_t room;
+    std::cin >> room;
+    client->requestHistory(room);
 }
 
 void ConsoleHandler::singUpCommand() {

@@ -29,6 +29,10 @@ void AbstractHandler::setAccount(std::shared_ptr<Account> other) {
     account = other;
 }
 
+void AbstractHandler::sendRaw(const std::string& data) {
+    socket->send(data);
+}
+
 void AbstractHandler::sendRequest(std::shared_ptr<Request> request) {
     socket->send(request->getQuery());
 }

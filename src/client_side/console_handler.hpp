@@ -15,6 +15,8 @@ class ConsoleHandler {
     void roomsCommand();
     void joinCommand();
     void leaveCommand();
+    void usersCommand();
+    void historyCommand();
     void singUpCommand();
     void signInCommand();
     void sendCommand();

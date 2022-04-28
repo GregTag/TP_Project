@@ -13,6 +13,8 @@ class RequestCreator {
     std::shared_ptr<Message> createErrorMessage(const std::string& text);
     std::shared_ptr<Message> createJoinMessage(size_t room, const std::string& name);
     std::shared_ptr<Message> createLeaveMessage(size_t room, const std::string& name);
+    std::shared_ptr<Message> createUserListMessage(size_t room, const std::string& list = "");
+    std::shared_ptr<Message> createHistoryMessage(size_t room);
 
    private:
     MessagesBuilder message_facade;

@@ -28,6 +28,14 @@ void ClientsideHandler::leave(size_t room) {
     sendRequest(getCreator()->createLeaveMessage(room, getAccount()->getName()));
 }
 
+void ClientsideHandler::requestUserList(size_t room) {
+    sendRequest(getCreator()->createUserListMessage(room));
+}
+
+void ClientsideHandler::requestHistory(size_t room) {
+    sendRequest(getCreator()->createHistoryMessage(room));
+}
+
 std::shared_ptr<std::vector<std::pair<size_t, std::string>>> ClientsideHandler::getUsers(
         size_t room) {
     return nullptr;
