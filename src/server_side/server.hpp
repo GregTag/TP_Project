@@ -26,6 +26,7 @@ class Server : public std::enable_shared_from_this<Server> {
 
     const std::filesystem::path path_to_rooms;
     bool running;
+    boost::asio::io_context& io;
     tcp::acceptor acceptor;
     std::unordered_map<size_t, std::shared_ptr<Room>> rooms;
     std::unordered_map<size_t, std::shared_ptr<ServersideHandler>> connections;

@@ -2,8 +2,11 @@
 
 #include "client_connection.hpp"
 
-Server::Server(boost::asio::io_context& io, size_t port, const std::filesystem::path& path)
-        : path_to_rooms(path), running(true), acceptor(io, tcp::endpoint(tcp::v4(), port)) {
+Server::Server(boost::asio::io_context& io_context, size_t port, const std::filesystem::path& path)
+        : path_to_rooms(path)
+        , running(true)
+        , io(io_context)
+        , acceptor(io, tcp::endpoint(tcp::v4(), port)) {
     startListen();
 }
 
@@ -12,7 +15,7 @@ Server::~Server() {
 }
 
 void Server::startListen() {
-    std::shared_ptr<Socket> socket = std::make_shared<Socket>(acceptor.get_executor());
+    std::shared_ptr<Socket> socket = std::make_shared<Socket>(io);
     acceptor.async_accept(
             socket->getSocket(), [this, socket](const boost::system::error_code& error) {
                 if (!error) {

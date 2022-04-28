@@ -11,8 +11,8 @@ using boost::asio::ip::tcp;
 
 class Socket {
    public:
-    Socket(const boost::asio::any_io_executor& io);
-    Socket(const boost::asio::any_io_executor& io, const std::string& host, size_t port);
+    Socket(boost::asio::io_context& io);
+    Socket(boost::asio::io_context& io, const std::string& host, size_t port);
 
     Socket(Socket&&);
     Socket() = delete;
@@ -29,6 +29,7 @@ class Socket {
     void close();
 
    private:
+    boost::asio::strand<boost::asio::io_context::executor_type> strand;
     tcp::socket socket;
     std::function<void(std::string)> callback;
     boost::asio::streambuf buffer;

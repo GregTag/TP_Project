@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
 
     boost::asio::io_context io;
     auto client = std::make_shared<ClientsideHandler>(
-            std::make_shared<Socket>(io.get_executor(), args[1], std::stoul(args[2])),
+            std::make_shared<Socket>(io, args[1], std::stoul(args[2])),
             std::make_shared<ConsoleRenderer>());
     Logger::log() << "Client created" << std::endl;
     client->startReceiving();
