@@ -43,7 +43,6 @@ std::string Room::getUsersList() {
 void Room::sendHistory(std::shared_ptr<ServersideHandler> handler) {
     input.clear();
     input.seekg(0, std::ios::beg);
-    Logger::log() << "Inside sendHistory" << std::endl;
     std::string line;
     while (!input.eof()) {
         std::getline(input, line);

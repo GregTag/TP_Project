@@ -11,7 +11,7 @@ ServerPermissionsBank::ServerPermissionsBank(const std::filesystem::path& storag
     if (!exists) storage.open(storage_file, std::ios::out);
     storage.open(storage_file, std::ios::in | std::ios::out);
     if (exists) loadFromFile();
-    if (!default_permissons_set.count(0)) setDefault(0, PermissionsSet::AllPermissions);
+    if (!default_permissons_set.count(0)) setDefault(0, PermissionsSet::DefaultPermissions);
 }
 
 ServerPermissionsBank::~ServerPermissionsBank() {

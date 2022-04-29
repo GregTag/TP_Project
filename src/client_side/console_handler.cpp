@@ -48,7 +48,6 @@ void ConsoleHandler::stop() {
 
 void ConsoleHandler::roomsCommand() {
     std::string ans = client->getAccount()->getRoomList();
-    Logger::log() << ans << std::endl;
     if (ans.empty()) {
         std::cout << "There is no available rooms." << std::endl;
     } else {

@@ -52,7 +52,6 @@ bool Server::registerClient(size_t id, std::shared_ptr<ServersideHandler> handle
 }
 
 void Server::relogin(size_t id) {
-    Logger::log() << "In relogin with id " << id << std::endl;
     auto found = client_by_id.find(id);
     if (found == client_by_id.end()) {
         Logger::err() << "Client not found." << std::endl;

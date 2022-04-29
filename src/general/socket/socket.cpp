@@ -35,14 +35,14 @@ void Socket::startCommunicate() {
                             std::istream is(&buffer);
                             std::string line;
                             std::getline(is, line, '\n');
-                            Logger::log() << "Recieved: " << line << std::endl;
+                            // Logger::log() << "Recieved: " << line << std::endl;
                             boost::asio::post(boost::asio::bind_executor(
                                     strand, [this, line = std::move(line)]() {
                                         callback(std::move(line));
                                     }));
                             startCommunicate();
                         } else if (error == boost::asio::error::eof) {
-                            Logger::log() << error.what() << std::endl;
+                            Logger::log() << "Closing connection." << std::endl;
                             boost::asio::post(boost::asio::bind_executor(
                                     strand, [this]() { callback(std::string("eof")); }));
                         } else {
@@ -52,7 +52,7 @@ void Socket::startCommunicate() {
 }
 
 void Socket::send(const std::string& data) {
-    Logger::log() << "Sended: " << data << std::endl;
+    // Logger::log() << "Sended: " << data << std::endl;
     boost::asio::async_write(
             socket, boost::asio::buffer(data + '\n'),
             boost::asio::bind_executor(strand,

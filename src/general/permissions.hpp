@@ -13,7 +13,7 @@ class PermissionsSet {
     static const Permission CanSendPrivateMessages = 8;
     static const Permission CanManagePermissions = 16;
 
-    static const Permission AllPermissions = 15;
+    static const Permission DefaultPermissions = 15;
 };
 
 class PermissionsBank {
