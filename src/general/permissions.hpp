@@ -11,6 +11,7 @@ class PermissionsSet {
     static const Permission CanGetUsersList = 2;
     static const Permission CanSendMessages = 4;
     static const Permission CanSendPrivateMessages = 8;
+    static const Permission CanManagePermissions = 16;
 
     static const Permission AllPermissions = 15;
 };

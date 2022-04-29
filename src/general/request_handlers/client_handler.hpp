@@ -15,6 +15,7 @@ class ClientsideHandler : public AbstractHandler {
     void leave(size_t room);
     void requestUserList(size_t room);
     void requestHistory(size_t room);
+    void manage(size_t room, const std::string& command);
 
     std::shared_ptr<std::vector<std::pair<size_t, std::string>>> getUsers(size_t room);
     std::shared_ptr<MessageRenderer> getRenderer();

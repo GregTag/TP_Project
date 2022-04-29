@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "permissions.hpp"
 #include "request_handlers/client_handler.hpp"
 
 class ConsoleHandler {
@@ -21,6 +22,7 @@ class ConsoleHandler {
     void signInCommand();
     void sendCommand();
     void privateSendCommand();
+    void manageCommand();
 
     std::shared_ptr<ClientsideHandler> client;
     bool running;

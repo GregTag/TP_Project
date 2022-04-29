@@ -27,6 +27,8 @@ void ConsoleHandler::start() {
             sendCommand();
         } else if (command == "whisper" || command == "w" || command == "tell") {
             privateSendCommand();
+        } else if (command == "manage") {
+            manageCommand();
         } else if (!command.empty()) {
             std::cout << "Unknown command." << std::endl;
         }
@@ -105,4 +107,25 @@ void ConsoleHandler::privateSendCommand() {
     std::cin >> room >> user;
     std::getline(std::cin, text, '\n');
     client->sendPrivate(room, user, text);
+}
+
+void ConsoleHandler::manageCommand() {
+    std::string subcommand;
+    size_t room;
+    std::string res;
+
+    std::cin >> subcommand >> room;
+    res.append(subcommand).push_back(' ');
+    if (subcommand == "set" || subcommand == "get") {
+        std::string user;
+        std::cin >> user;
+        res.append(user).push_back(' ');
+    }
+    if (subcommand == "set" || subcommand == "setdefault") {
+        typename PermissionsSet::Permission perm;
+        std::cin >> perm;
+        res.append(std::to_string(perm)).push_back(' ');
+    }
+    res.pop_back();
+    client->manage(room, res);
 }

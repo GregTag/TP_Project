@@ -65,6 +65,9 @@ void ClientConnection::onMessage(std::shared_ptr<Message> request) {
         case MessageTypes::History:
             historyEvent(request);
             break;
+        case MessageTypes::Manage:
+            manageEvent(request);
+            break;
         default:
             chatEvent(request);
             break;
@@ -178,4 +181,44 @@ void ClientConnection::chatEvent(std::shared_ptr<Message> request) {
     }
 
     room->broadcast(request);
+}
+
+void ClientConnection::manageEvent(std::shared_ptr<Message> request) {
+    if (!PermissionsBank::getInstance()->check(request->getRoom(), getAccount()->getId(),
+                                               PermissionsSet::CanManagePermissions)) {
+        sendError("Permissions denied");
+        return;
+    }
+    std::stringstream ss(std::static_pointer_cast<TextDecorator>(request)->getText());
+    std::string subcommand;
+    typename PermissionsSet::Permission perm;
+
+    ss >> subcommand;
+    if (subcommand == "setdefault") {
+        ss >> perm;
+        PermissionsBank::getInstance()->setDefault(request->getRoom(), perm);
+        sendRequest(getCreator()->createInfoMessage("Success."));
+        return;
+    }
+
+    std::string name;
+    ss >> name;
+    auto client = AccountsDatabase::getInstance()->findAccountByName(name);
+    if (!client) {
+        sendError("User with this name does not exist.");
+        return;
+    }
+    if (subcommand == "get") {
+        sendRequest(getCreator()->createInfoMessage(
+                "Permission: " + std::to_string(PermissionsBank::getInstance()->get(
+                                         request->getRoom(), client->getId()))));
+        return;
+    }
+    if (subcommand == "set") {
+        ss >> perm;
+        PermissionsBank::getInstance()->set(request->getRoom(), client->getId(), perm);
+        sendRequest(getCreator()->createInfoMessage("Success."));
+        return;
+    }
+    sendError("Wrong subcommand.");
 }

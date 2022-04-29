@@ -36,6 +36,10 @@ void ClientsideHandler::requestHistory(size_t room) {
     sendRequest(getCreator()->createHistoryMessage(room));
 }
 
+void ClientsideHandler::manage(size_t room, const std::string& command) {
+    sendRequest(getCreator()->createManageMessage(room, command));
+}
+
 std::shared_ptr<std::vector<std::pair<size_t, std::string>>> ClientsideHandler::getUsers(
         size_t room) {
     return nullptr;

@@ -24,6 +24,7 @@ class ClientConnection : public ServersideHandler {
     void userListEvent(std::shared_ptr<Message>);
     void historyEvent(std::shared_ptr<Message>);
     void chatEvent(std::shared_ptr<Message>);
+    void manageEvent(std::shared_ptr<Message>);
 
     const size_t id;
     std::weak_ptr<Server> server;
