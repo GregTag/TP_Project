@@ -9,12 +9,21 @@
 * [UML Class diagram](ClassDiagram.svg)
 
 ## How to build
+### Linux
 Сборка осуществляется средставми `cmake`. Требуется поддержка компилятором `C++17`.
 Для сборки достаточно запустить
 ```bash
 $ ./build.sh
 ```
 В системе должна быть установлена библиотека `boost` минимальной версии `1.78`.
+### Windows
+Сборка осуществляется с помощью тулчейна [msys2](https://www.msys2.org/). В msys необходимо установить `g++`, `make` и `cmake`. Также необходимо дополнительно скачать [boost](https://www.boost.org/users/download/). После этого можно начинать сборку:
+```cmd
+mkdir build
+cd build
+cmake .. -DCMAKE_CXX_COMPILER=/mingw/g++.exe -DCMAKE_C_COMPILER=/mingw64/gcc.exe -DBOOST_ROOT=/path/to/boost
+make -j
+```
 
 ## How to launch
 
