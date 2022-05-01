@@ -7,6 +7,7 @@
 * [Changelog](CHANGELOG.md)
 * [Description](DESCRIPTION.md)
 * [UML Class diagram](ClassDiagram.svg)
+* [Doxygen interactive UML](doxygen/index.html)
 * [How feature was added](feature.md)
 
 ## How to build

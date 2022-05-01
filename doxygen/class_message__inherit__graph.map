@@ -1,0 +1,12 @@
+<map id="Message" name="Message">
+<area shape="rect" id="node1" title=" " alt="" coords="311,300,427,407"/>
+<area shape="rect" id="node4" href="$class_base_message.html" title=" " alt="" coords="199,455,347,620"/>
+<area shape="rect" id="node5" href="$class_properties_decorator.html" title=" " alt="" coords="371,455,559,620"/>
+<area shape="rect" id="node2" href="$class_request.html" title=" " alt="" coords="316,145,423,252"/>
+<area shape="rect" id="node3" title=" " alt="" coords="282,5,457,97"/>
+<area shape="rect" id="node6" href="$class_private_decorator.html" title=" " alt="" coords="5,668,173,819"/>
+<area shape="rect" id="node7" href="$class_room_decorator.html" title=" " alt="" coords="197,675,357,811"/>
+<area shape="rect" id="node8" href="$class_sender_decorator.html" title=" " alt="" coords="382,675,549,811"/>
+<area shape="rect" id="node9" href="$class_text_decorator.html" title=" " alt="" coords="573,675,723,811"/>
+<area shape="rect" id="node10" href="$class_time_decorator.html" title=" " alt="" coords="747,668,901,819"/>
+</map>

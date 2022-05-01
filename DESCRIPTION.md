@@ -21,6 +21,8 @@
 
 ![Class Diagram did not loaded :(](ClassDiagram.svg "Class Diagram")
 
+Или можно посмотреть UML созданную с помощью doxygen. *([Doxygen interactive UML](doxygen/index.html))*
+
 ### Используемые паттерны
 
 * Строитель: класс `MessagesBuilder`. Предоставляет удобный интерфейс для создания сообщений всех видов.
