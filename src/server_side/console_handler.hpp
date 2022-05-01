@@ -12,6 +12,7 @@ class ConsoleHandler {
     void start();
 
    private:
+    void helpCommand();
     void broadcastCommand();
     void accountCommand();
     void permissionCommand();

@@ -9,6 +9,8 @@ void ConsoleHandler::start() {
         std::cin >> command;
         if (std::cin.eof() || command == "exit" || command == "quit") {
             break;
+        } else if (command == "help") {
+            helpCommand();
         } else if (command == "register" || command == "signup") {
             singUpCommand();
         } else if (command == "login" || command == "signin") {
@@ -30,13 +32,33 @@ void ConsoleHandler::start() {
         } else if (command == "manage") {
             manageCommand();
         } else if (!command.empty()) {
-            std::cout << "Unknown command." << std::endl;
+            std::cout << "Unknown command. Type help for all avaialble commands." << std::endl;
         }
     }
     if (running) {
         running = false;
         client->exit();
     }
+}
+
+void ConsoleHandler::helpCommand() {
+    std::cout << "- help                                      Print this.\n- register/signup "
+                 "<name> <password>         Register account with <name> and <password>.\n- "
+                 "login/signin  <name> <password>           Authorizate with account with <name> "
+                 "and <password>.\n- rooms                                     Print available "
+                 "rooms for you\n- join <room>                               Join to <room>.\n- "
+                 "leave <room>                              Leave <room>.\n- users <room>          "
+                 "                    Get all users, who are currently online in <room>.\n- "
+                 "history <room>                            Get all messages in <room>.\n- send/s "
+                 "<room> <some text>                 Send message with <some text> to <room>.\n- "
+                 "whisper/tell/w <room> <name> <some text>  Send private message with <some text> "
+                 "to user <name> in <room>.\n- manage <subcommand>                       Manage "
+                 "user's permissions:\n    - get <room> <name>                         get "
+                 "permissions user <name> in <room>,\n    - set <room> <name> <permission>         "
+                 "   set permissions user <name> in <room>,\n    - setdefault <room> <permission>  "
+                 "          set <permission> as default for <room>.\n- exit/quit/Ctrl+D            "
+                 "              Close connection and exit from app."
+              << std::endl;
 }
 
 void ConsoleHandler::stop() {
