@@ -33,3 +33,18 @@ std::shared_ptr<Message> RequestCreator::createLeaveMessage(size_t room, const s
             .addSender(name)
             .getResult();
 }
+
+std::shared_ptr<Message> RequestCreator::createUserListMessage(size_t room,
+                                                               const std::string& list) {
+    message_facade.createBase(MessageTypes::UserList).addRoom(room);
+    if (!list.empty()) message_facade.addText(list);
+    return message_facade.getResult();
+}
+
+std::shared_ptr<Message> RequestCreator::createHistoryMessage(size_t room) {
+    return message_facade.createBase(MessageTypes::History).addRoom(room).getResult();
+}
+
+std::shared_ptr<Message> RequestCreator::createManageMessage(size_t room, const std::string& cmd) {
+    return message_facade.createBase(MessageTypes::Manage).addRoom(room).addText(cmd).getResult();
+}

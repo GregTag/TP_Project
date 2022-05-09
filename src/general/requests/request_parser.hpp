@@ -15,6 +15,8 @@ class RequestParser {
    private:
     size_t readNumber();
     std::string readString();
+    std::set<size_t> parseSet();
+    std::shared_ptr<Account> parseAccount();
     std::shared_ptr<Message> parseMessage();
 
     std::stringstream ss;

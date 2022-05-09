@@ -12,7 +12,7 @@ class MessagesBuilder {
     MessagesBuilder& addRoom(size_t room);
     MessagesBuilder& addSender(const std::string& name);
     MessagesBuilder& addText(const std::string& text);
-    MessagesBuilder& makePrivate(size_t addressee);
+    MessagesBuilder& makePrivate(const std::string& addressee);
 
    private:
     std::shared_ptr<Message> result;

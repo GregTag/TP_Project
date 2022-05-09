@@ -1,6 +1,7 @@
 #pragma once
 #include <boost/iostreams/stream.hpp>
 #include <boost/iostreams/tee.hpp>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 
@@ -8,8 +9,8 @@
 
 class ServerLogger : public Logger {
    public:
-    ~ServerLogger();
-    static void initialize(std::string path_to_log_file);
+    virtual ~ServerLogger();
+    static void initialize(const std::filesystem::path& path_to_log_file);
 
    protected:
     std::ostream& getLogStream() override;
@@ -17,7 +18,7 @@ class ServerLogger : public Logger {
 
    private:
     using Device = boost::iostreams::tee_device<std::ostream, std::ofstream>;
-    ServerLogger(std::string);
+    ServerLogger(const std::filesystem::path&);
 
     std::ofstream file;
     Device device;

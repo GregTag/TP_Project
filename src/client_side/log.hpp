@@ -5,7 +5,7 @@
 
 class DebugLogger : public Logger {
    public:
-    ~DebugLogger();
+    virtual ~DebugLogger();
 
     static void initialize(const std::string& path_to_log_file);
 

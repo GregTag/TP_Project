@@ -14,7 +14,7 @@ void ConsoleRenderer::baseMessageRender(std::shared_ptr<Message> msg) {
 
     if (type == MessageTypes::Error) std::cout << "[ERROR] ";
     if (type == MessageTypes::Info) std::cout << "[INFO] ";
-    if (type == MessageTypes::Chat && !room.empty()) {
+    if (!room.empty()) {
         if (room == "0")
             std::cout << "[All] ";
         else
@@ -24,15 +24,16 @@ void ConsoleRenderer::baseMessageRender(std::shared_ptr<Message> msg) {
 
     if (type == MessageTypes::Join || type == MessageTypes::Leave) {
         std::cout << (type == MessageTypes::Join ? "joined." : "leaved.");
-    } else {
-        if (!text.empty()) std::cout << (is_private ? "[P]: " : ": ") << text;
+    } else if (!text.empty()) {
+        if (type == MessageTypes::Chat) std::cout << (is_private ? "[P]:" : ":");
+        std::cout << text;
     }
     std::cout << std::endl;
 
     reset();
 }
 
-// [time] [type|room] sender [P]: text
+// [time][type|room] sender [P]: text
 
 void ConsoleRenderer::timeRender(std::shared_ptr<Message> msg) {
     time_t timestamp = std::static_pointer_cast<TimeDecorator>(msg)->getTimestamp();

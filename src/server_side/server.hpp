@@ -1,31 +1,35 @@
 #pragma once
+#include <filesystem>
 #include <list>
 
-#include "client_handlers/server_handler.hpp"
-#include "permissions.hpp"
+#include "database/simple_database.hpp"
+#include "request_handlers/server_handler.hpp"
 #include "requests/request_creator.hpp"
 #include "room.hpp"
 
 class Server : public std::enable_shared_from_this<Server> {
    public:
-    Server(boost::asio::io_context& io, size_t port, const std::string& path);
+    Server(boost::asio::io_context& io, size_t port, const std::filesystem::path& path);
     ~Server();
 
     std::shared_ptr<Room> getRoom(size_t room_id);
-    std::shared_ptr<Room> createRoom(size_t room_id);
-    std::shared_ptr<PermissionsBank> getPermissonsBank();
-    void registerClient(std::shared_ptr<ServersideHandler> handler);
+    std::shared_ptr<Room> getOrCreateRoom(size_t room_id);
+    bool registerClient(size_t id, std::shared_ptr<ServersideHandler> handler);
+    void relogin(size_t id);
+    void eraseConnection(size_t);
     void serverBroadcast(const std::string& text);
     void stopServer();
+    bool isRunning();
 
    private:
     void startListen();
 
+    const std::filesystem::path path_to_rooms;
+    bool running;
+    boost::asio::io_context& io;
     tcp::acceptor acceptor;
     std::unordered_map<size_t, std::shared_ptr<Room>> rooms;
-    std::list<std::shared_ptr<ServersideHandler>> clients;
+    std::unordered_map<size_t, std::shared_ptr<ServersideHandler>> connections;
     std::unordered_map<size_t, std::weak_ptr<ServersideHandler>> client_by_id;
-    std::shared_ptr<PermissionsBank> permissons_bank;
-
-    const std::string path_to_room_storage;
+    size_t last_connection;
 };

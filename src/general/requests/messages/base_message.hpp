@@ -1,6 +1,5 @@
 #pragma once
 #include "message.hpp"
-#include "room.hpp"
 
 class BaseMessage : public Message {
    public:

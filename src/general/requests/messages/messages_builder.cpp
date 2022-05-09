@@ -40,7 +40,7 @@ MessagesBuilder& MessagesBuilder::addText(const std::string& text) {
     return *this;
 }
 
-MessagesBuilder& MessagesBuilder::makePrivate(size_t addressee) {
+MessagesBuilder& MessagesBuilder::makePrivate(const std::string& addressee) {
     result = std::make_shared<PrivateDecorator>(result, addressee);
     return *this;
 }

@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-#include "client_handlers/client_handler.hpp"
+#include "permissions.hpp"
+#include "request_handlers/client_handler.hpp"
 
 class ConsoleHandler {
    public:
@@ -12,8 +13,17 @@ class ConsoleHandler {
     void stop();
 
    private:
-    void joinExecuted();
-    // TODO: implement all remaining commands
+    void helpCommand();
+    void roomsCommand();
+    void joinCommand();
+    void leaveCommand();
+    void usersCommand();
+    void historyCommand();
+    void singUpCommand();
+    void signInCommand();
+    void sendCommand();
+    void privateSendCommand();
+    void manageCommand();
 
     std::shared_ptr<ClientsideHandler> client;
     bool running;
