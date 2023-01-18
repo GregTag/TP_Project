@@ -1,6 +1,8 @@
 #pragma once
 #include <filesystem>
 #include <fstream>
+#include <sstream>
+#include <string>
 
 #include "permissions.hpp"
 

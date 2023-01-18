@@ -2,28 +2,42 @@
 
 #include <iostream>
 
-Socket::Socket(boost::asio::io_context& io) : strand(boost::asio::make_strand(io)), socket(io) {}
+Socket::Socket(boost::asio::io_context& io, ssl::context& context, ssl_socket::handshake_type type)
+        : strand(boost::asio::make_strand(io)), type(type), socket(io, context) {
+    socket.set_verify_mode(ssl::verify_none);
+}
 
-Socket::Socket(boost::asio::io_context& io, const std::string& host, size_t port) : Socket(io) {
+Socket::Socket(boost::asio::io_context& io, ssl::context& context, ssl_socket::handshake_type type,
+               const std::string& host, size_t port)
+        : Socket(io, context, type) {
     connect(host, port);
+    doHandshake();
 }
 
 Socket::Socket(Socket&& other) : strand(std::move(other.strand)), socket(std::move(other.socket)) {}
 
 Socket::~Socket() {
-    if (socket.is_open()) close();
+    if (socket.next_layer().is_open()) close();
 }
 
 void Socket::connect(const std::string& host, size_t port) {
-    socket.connect(tcp::endpoint(boost::asio::ip::make_address(host), port));
+    socket.next_layer().connect(tcp::endpoint(boost::asio::ip::make_address(host), port));
 }
 
 tcp::socket& Socket::getSocket() {
-    return socket;
+    return socket.next_layer();
 }
 
 void Socket::setCallback(const std::function<void(const std::string&)>& cb) {
     callback = cb;
+}
+
+void Socket::doHandshake() {
+    boost::system::error_code ec;
+    socket.handshake(type, ec);
+    if (ec) {
+        Logger::err() << ec.what() << std::endl;
+    }
 }
 
 void Socket::startCommunicate() {
@@ -64,5 +78,7 @@ void Socket::send(const std::string& data) {
 }
 
 void Socket::close() {
-    socket.close();
+    socket.next_layer().cancel();
+    socket.shutdown();
+    socket.next_layer().close();
 }

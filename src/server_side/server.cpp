@@ -2,10 +2,12 @@
 
 #include "client_connection.hpp"
 
-Server::Server(boost::asio::io_context& io_context, size_t port, const std::filesystem::path& path)
+Server::Server(boost::asio::io_context& io_context, ssl::context&& ssl_context, size_t port,
+               const std::filesystem::path& path)
         : path_to_rooms(path)
         , running(true)
         , io(io_context)
+        , ssl_context(std::move(ssl_context))
         , acceptor(io, tcp::endpoint(tcp::v4(), port)) {
     startListen();
 }
@@ -15,7 +17,7 @@ Server::~Server() {
 }
 
 void Server::startListen() {
-    std::shared_ptr<Socket> socket = std::make_shared<Socket>(io);
+    std::shared_ptr<Socket> socket = std::make_shared<Socket>(io, ssl_context, ssl_socket::server);
     acceptor.async_accept(
             socket->getSocket(), [this, socket](const boost::system::error_code& error) {
                 if (!error) {
@@ -24,6 +26,7 @@ void Server::startListen() {
                     connections.emplace(last_connection,
                                         std::static_pointer_cast<ServersideHandler>(client));
                     ++last_connection;
+                    socket->doHandshake();
                     client->sendRequest(client->getCreator()->createInfoMessage("Welcome!"));
                     Logger::log() << "New socket" << std::endl;
                     socket->startCommunicate();
