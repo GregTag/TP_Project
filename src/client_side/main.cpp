@@ -7,8 +7,8 @@
 int main(int argc, char* argv[]) {
     DebugLogger::initialize("log_client.txt");
 
-    if (argc != 3) {
-        std::cerr << "Usage: " << argv[0] << " <host IP> <port>\n";
+    if (argc != 4) {
+        std::cerr << "Usage: " << argv[0] << " <host IP> <port> <certificate.csr>\n";
         return 1;
     }
 
@@ -16,8 +16,13 @@ int main(int argc, char* argv[]) {
     for (char** it = argv; it != argv + argc; ++it) args.emplace_back(*it);
 
     boost::asio::io_context io;
+    ssl::context ssl_context(ssl::context::sslv23);
+    ssl_context.set_default_verify_paths();
+    ssl_context.load_verify_file(argv[3]);
+
     auto client = std::make_shared<ClientsideHandler>(
-            std::make_shared<Socket>(io, args[1], std::stoul(args[2])),
+            std::make_shared<Socket>(io, ssl_context, ssl_socket::client, args[1],
+                                     std::stoul(args[2])),
             std::make_shared<ConsoleRenderer>());
     Logger::log() << "Client created" << std::endl;
     client->startReceiving();

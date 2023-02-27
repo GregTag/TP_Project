@@ -64,8 +64,9 @@ void ConsoleHandler::helpCommand() {
 void ConsoleHandler::stop() {
     if (running) {
         std::cout << "Server closed connection.\nYou can close a program." << std::endl;
+        running = false;
+        client->exit();
     }
-    running = false;
 }
 
 void ConsoleHandler::roomsCommand() {

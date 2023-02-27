@@ -43,7 +43,7 @@ void ConsoleHandler::helpCommand() {
 
 void ConsoleHandler::broadcastCommand() {
     std::string text;
-    std::getline(std::cin, text);
+    std::getline(std::cin >> std::ws, text);
     server->serverBroadcast(text);
 }
 

@@ -9,7 +9,8 @@
 
 class Server : public std::enable_shared_from_this<Server> {
    public:
-    Server(boost::asio::io_context& io, size_t port, const std::filesystem::path& path);
+    Server(boost::asio::io_context& io, ssl::context&& ssl_context, size_t port,
+           const std::filesystem::path& path);
     ~Server();
 
     std::shared_ptr<Room> getRoom(size_t room_id);
@@ -27,6 +28,7 @@ class Server : public std::enable_shared_from_this<Server> {
     const std::filesystem::path path_to_rooms;
     bool running;
     boost::asio::io_context& io;
+    ssl::context ssl_context;
     tcp::acceptor acceptor;
     std::unordered_map<size_t, std::shared_ptr<Room>> rooms;
     std::unordered_map<size_t, std::shared_ptr<ServersideHandler>> connections;
